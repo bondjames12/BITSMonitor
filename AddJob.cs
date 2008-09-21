@@ -27,6 +27,11 @@ namespace BitsMonitor
             get { return this.txtUrl.Text; }
         }
 
+		public string Directory
+		{
+			get { return this.txtSaveIn.Text; }
+		}
+
         
         public AddJob()
         {
@@ -60,6 +65,8 @@ namespace BitsMonitor
                 if (!IsUrlOK())
                     this.err.SetError(this.txtUrl, "not proper web/ftp address");
             }
+			this.DialogResult = DialogResult.OK;
+			this.Close();
         }
 
         /// <summary>
@@ -87,6 +94,12 @@ namespace BitsMonitor
 			{
 				this.txtSaveIn.Text = folderBrowse.SelectedPath;
 			}
+		}
+
+		private void btnCancel_Click(object sender, EventArgs e)
+		{
+			this.DialogResult = DialogResult.Cancel;
+			this.Close();
 		}
     }
 }
