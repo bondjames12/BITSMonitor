@@ -37,8 +37,8 @@
 			this.lblUrl = new System.Windows.Forms.Label();
 			this.err = new System.Windows.Forms.ErrorProvider(this.components);
 			this.cbxAutoRun = new System.Windows.Forms.CheckBox();
-			this.txtSaveAs = new System.Windows.Forms.TextBox();
-			this.lblSaveAs = new System.Windows.Forms.Label();
+			this.txtSaveIn = new System.Windows.Forms.TextBox();
+			this.lblSaveIn = new System.Windows.Forms.Label();
 			this.btnBrowse = new System.Windows.Forms.Button();
 			((System.ComponentModel.ISupportInitialize)(this.err)).BeginInit();
 			this.SuspendLayout();
@@ -116,23 +116,23 @@
 			this.cbxAutoRun.Text = "Autorun download";
 			this.cbxAutoRun.UseVisualStyleBackColor = true;
 			// 
-			// txtSaveAs
+			// txtSaveIn
 			// 
-			this.txtSaveAs.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
+			this.txtSaveIn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
 						| System.Windows.Forms.AnchorStyles.Right)));
-			this.txtSaveAs.Location = new System.Drawing.Point(76, 64);
-			this.txtSaveAs.Name = "txtSaveAs";
-			this.txtSaveAs.Size = new System.Drawing.Size(135, 20);
-			this.txtSaveAs.TabIndex = 7;
+			this.txtSaveIn.Location = new System.Drawing.Point(76, 64);
+			this.txtSaveIn.Name = "txtSaveIn";
+			this.txtSaveIn.Size = new System.Drawing.Size(135, 20);
+			this.txtSaveIn.TabIndex = 7;
 			// 
-			// lblSaveAs
+			// lblSaveIn
 			// 
-			this.lblSaveAs.AutoSize = true;
-			this.lblSaveAs.Location = new System.Drawing.Point(9, 68);
-			this.lblSaveAs.Name = "lblSaveAs";
-			this.lblSaveAs.Size = new System.Drawing.Size(49, 13);
-			this.lblSaveAs.TabIndex = 8;
-			this.lblSaveAs.Text = "Save as:";
+			this.lblSaveIn.AutoSize = true;
+			this.lblSaveIn.Location = new System.Drawing.Point(9, 68);
+			this.lblSaveIn.Name = "lblSaveIn";
+			this.lblSaveIn.Size = new System.Drawing.Size(46, 13);
+			this.lblSaveIn.TabIndex = 8;
+			this.lblSaveIn.Text = "Save in:";
 			// 
 			// btnBrowse
 			// 
@@ -143,6 +143,7 @@
 			this.btnBrowse.TabIndex = 9;
 			this.btnBrowse.Text = "Browse";
 			this.btnBrowse.UseVisualStyleBackColor = true;
+			this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
 			// 
 			// AddJob
 			// 
@@ -152,8 +153,8 @@
 			this.CancelButton = this.btnCancel;
 			this.ClientSize = new System.Drawing.Size(294, 149);
 			this.Controls.Add(this.btnBrowse);
-			this.Controls.Add(this.lblSaveAs);
-			this.Controls.Add(this.txtSaveAs);
+			this.Controls.Add(this.lblSaveIn);
+			this.Controls.Add(this.txtSaveIn);
 			this.Controls.Add(this.cbxAutoRun);
 			this.Controls.Add(this.lblUrl);
 			this.Controls.Add(this.lblJobName);
@@ -183,8 +184,8 @@
         private System.Windows.Forms.Label lblUrl;
         private System.Windows.Forms.ErrorProvider err;
         private System.Windows.Forms.CheckBox cbxAutoRun;
-		private System.Windows.Forms.Label lblSaveAs;
-		private System.Windows.Forms.TextBox txtSaveAs;
+		private System.Windows.Forms.Label lblSaveIn;
+		private System.Windows.Forms.TextBox txtSaveIn;
 		private System.Windows.Forms.Button btnBrowse;
     }
 }
