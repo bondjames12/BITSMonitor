@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using Microsoft.Bits;
 using BitsNet;
+using System.Collections;
 
 namespace BitsMonitor
 {
@@ -23,6 +24,7 @@ namespace BitsMonitor
             InitializeComponent();
 			InitializeGUI();
             RefreshJobs();
+			EnableActionsFromGui(false);
         }
 
 		private void InitializeGUI()
@@ -57,7 +59,7 @@ namespace BitsMonitor
             {
                 ListViewItem lvi = new ListViewItem(j.GetHashCode().ToString());
                 lvi.SubItems[0].Text = j.FileName;
-                lvi.SubItems.AddRange(new string[] {j.DisplayName, j.PercentComplete.ToString(), j.JobStateDescription, j.Url });
+                lvi.SubItems.AddRange(new string[] {j.DisplayName, j.PercentComplete.ToString("F2"), j.JobStateDescription, j.Url });
                 lstDownloads.Items.Add(lvi);
 				lvi.Tag = j.Guid;
             }
@@ -65,16 +67,22 @@ namespace BitsMonitor
             Cursor.Current = actual;
         }
 
-        private void lstDownloads_SelectedIndexChanged(object sender, EventArgs e)
-        {
+		private void lstDownloads_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+		{
 			EnableActionsFromGui(IsJobSelected());
-        }
+		}
 
 		private void EnableActionsFromGui(bool state)
 		{
 			tsmiCancel.Enabled = state;
 			tsmiStart.Enabled = state;
 			tsmiPause.Enabled = state;
+			tsmiComplete.Enabled = state;
+
+			tsbCancel.Enabled = state;
+			tsbSuspend.Enabled = state;
+			tsbStart.Enabled = state;
+			tsbComplete.Enabled = state;
 		}
 
         private bool IsJobSelected()
@@ -106,11 +114,8 @@ namespace BitsMonitor
 
 		#region perform Cancel,Resume,Complete on selected jobs...
 
-		private void CancelJob()
+		private void CancelJobs()
         {
-			// this should go to function that will enable/disable proper controls...
-            if (!IsJobSelected() )
-                return;
 			BitsManager.PerformActions(this.GetSelectedJobGuids(), BitsJobActions.CANCEL_JOB);
         }
 
@@ -118,6 +123,11 @@ namespace BitsMonitor
         {
 			BitsManager.PerformActions(GetSelectedJobGuids(), BitsJobActions.RESUME_JOB);
         }
+
+		private void SuspendJobs()
+		{
+			BitsManager.PerformActions(GetSelectedJobGuids(), BitsJobActions.SUSPEND_JOB);
+		}
 
         private void CompleteJobs()
         {
@@ -131,16 +141,32 @@ namespace BitsMonitor
             AddJob addjob = new AddJob();
             if (addjob.ShowDialog(this) == DialogResult.OK)
             {
-
+				BitsManager.AddJob(addjob.Url, addjob.JobName, addjob.Directory);
             }
         }
 
-        private void tsmiStart_Click(object sender, EventArgs e)
+        private void btnStart_Click(object sender, EventArgs e)
         {
-            //this.AddJob();
+			ResumeJobs();
         }
 
-        private void tsbAddJob_Click(object sender, EventArgs e)
+
+		private void btnCancel_Click(object sender, EventArgs e)
+		{
+			CancelJobs();
+		}
+
+		private void btnSuspend_Click(object sender, EventArgs e)
+		{
+			SuspendJobs();
+		}
+
+		private void btnCompleteJob_Click(object sender, EventArgs e)
+		{
+			CompleteJobs();
+		}
+
+		private void tsbAddJob_Click(object sender, EventArgs e)
         {
             this.AddJob();
 		}
@@ -168,9 +194,42 @@ namespace BitsMonitor
 			ResetTimers();
 		}
 
+		/// <summary>
+		/// Refreshes the list of active (non completed) jobs.
+		/// Preserves selection state of the jobs on the list.
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
 		private void timer_Tick(object sender, EventArgs e)
 		{
+			EnableTimers(false);
+			Cursor currentCursor = Cursor.Current;
+			Cursor.Current = Cursors.WaitCursor;
+
+			int indicesCount = lstDownloads.SelectedIndices.Count;
+			int[] indices = new int[indicesCount];
+			lstDownloads.SelectedIndices.CopyTo(indices, 0);
+
 			RefreshJobs();
+
+			for (int i = 0; i < indicesCount; i++)
+			{
+				lstDownloads.Items[indices[i]].Focused = true;
+				lstDownloads.Items[indices[i]].Selected = true;
+			}
+
+			Cursor.Current = currentCursor;
+			EnableTimers(true);
+		}
+
+		/// <summary>
+		/// Enables/disables timers.
+		/// </summary>
+		/// <param name="state"></param>
+		private void EnableTimers(bool state)
+		{
+			this.timer.Enabled = state;
+			this.timerRemaining.Enabled = state;
 		}
 
 		private void timerRemaining_Tick(object sender, EventArgs e)
