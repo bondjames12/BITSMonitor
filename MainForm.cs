@@ -59,7 +59,7 @@ namespace BitsMonitor
                 lvi.SubItems[0].Text = j.FileName;
                 lvi.SubItems.AddRange(new string[] {j.DisplayName, j.PercentComplete.ToString(), j.JobStateDescription, j.Url });
                 lstDownloads.Items.Add(lvi);
-				lvi.Tag = j.job
+				lvi.Tag = j.Guid;
             }
 
             Cursor.Current = actual;
