@@ -46,21 +46,19 @@ namespace BitsMonitor
         private void btnOK_Click(object sender, EventArgs e)
         {
             this.err.Clear();
-            if (string.IsNullOrEmpty(this.txtJobName.Text) || string.IsNullOrEmpty(this.txtUrl.Text) || string.IsNullOrEmpty(this.txtSaveAs.Text))
+            if (string.IsNullOrEmpty(this.txtJobName.Text) || string.IsNullOrEmpty(this.txtUrl.Text) || string.IsNullOrEmpty(this.txtSaveIn.Text))
             {
                 if (string.IsNullOrEmpty(this.txtUrl.Text))
                     this.err.SetError(this.txtUrl, "no url specified");
                 if (string.IsNullOrEmpty(this.txtJobName.Text))
                     this.err.SetError(this.txtJobName, "no job name specified");
-				if (string.IsNullOrEmpty(this.txtSaveAs.Text))
-					this.err.SetError(this.txtSaveAs, "no destination file specified");
+				if (string.IsNullOrEmpty(this.txtSaveIn.Text))
+					this.err.SetError(this.txtSaveIn, "no destination folder specified");
             }
             else
             {
                 if (!IsUrlOK())
                     this.err.SetError(this.txtUrl, "not proper web/ftp address");
-				if (File.Exists(this.txtSaveAs.Text))
-					this.err.SetError(this.txtSaveAs, "file already exists!");
             }
         }
 
@@ -74,5 +72,21 @@ namespace BitsMonitor
                 _regex = new Regex(urlPattern, RegexOptions.Compiled);
             return _regex.IsMatch(this.txtUrl.Text);
         }
+
+		/// <summary>
+		/// Browse for destination folder (folder where downloaded file will be stored)
+		/// </summary>
+		/// <param name="sender"></param>
+		/// <param name="e"></param>
+		private void btnBrowse_Click(object sender, EventArgs e)
+		{
+			FolderBrowserDialog folderBrowse = new FolderBrowserDialog();
+			folderBrowse.ShowNewFolderButton = false;
+			folderBrowse.Description = "Please choose destination folder for storing downloaded file";
+			if (folderBrowse.ShowDialog() == DialogResult.OK)
+			{
+				this.txtSaveIn.Text = folderBrowse.SelectedPath;
+			}
+		}
     }
 }
