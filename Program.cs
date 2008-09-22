@@ -63,7 +63,7 @@ namespace BitsMonitor
 
             string filename = HttpUtility.UrlDecode(url.Substring(url.LastIndexOf("/") + 1, (url.Length - url.LastIndexOf("/") - 1)));
 
-			BitsNet.BitsManager.AddJob(url, "job" + file, directory);
+			BitsNet.BitsManager.AddJob(url, file, directory);
 
         }
 
