@@ -380,6 +380,38 @@ namespace BitsMonitor
 			about.ShowDialog(this);
 		}
 
+		private BitsJob GetActiveJob()
+		{
+			BitsJob job = null;
+			for (int i = 0; i < lstDownloads.Items.Count; i++)
+			{
+				string s = lstDownloads.Items[i].SubItems[3].Text;
+				if (s.Contains("CONNE") || s.Contains("TRANSFERRING"))
+				{
+					job = BitsManager.GetAllJobs()[(Guid)lstDownloads.Items[i].Tag];
+					break;
+				}
+
+			}
+			return job;
+		}
+
+		private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
+		{
+			if (e.Button == MouseButtons.Left)
+			{
+				BitsJob job = GetActiveJob();
+				if (job != null)
+					notifyIcon.ShowBalloonTip(1000, "Download info", String.Format("job: {0} - {1}", job.DisplayName, job.PercentComplete.ToString("P2")), ToolTipIcon.Info);
+			}
+		}
+
+		private void notifyIcon_BalloonTipClicked(object sender, EventArgs e)
+		{
+			if (this.WindowState == FormWindowState.Minimized)
+				this.tsmiRestoreMinimize_Click(this, EventArgs.Empty);
+		}
+
 	}
 }
 
