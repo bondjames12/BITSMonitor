@@ -100,5 +100,10 @@ namespace BitsMonitor
             }
         }
         #endregion
+
+		private void emailAddress_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+		{
+			System.Diagnostics.Process.Start("mailto:maciek.talaska@gmail.com?Subject=[BITS Monitor]");
+		}
     }
 }
