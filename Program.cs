@@ -59,15 +59,11 @@ namespace BitsMonitor
 
             if ((directory.Length == 2) && (directory[1] == ':'))
                 directory = directory + '\\';
+			string file = HttpUtility.UrlDecode( url.Substring( url.LastIndexOf("/") +1 ) );
+
             string filename = HttpUtility.UrlDecode(url.Substring(url.LastIndexOf("/") + 1, (url.Length - url.LastIndexOf("/") - 1)));
 
-            throw new System.NotImplementedException("code to adding job still not implemented!");
-            //IBackgroundCopyManager bcm = (IBackgroundCopyManager)new BackgroundCopyManager();
-            //Guid g;
-            //IBackgroundCopyJob job;
-            //bcm.CreateJob("job" + filename, BG_JOB_TYPE.BG_JOB_TYPE_DOWNLOAD, out g, out job);
-            //job.AddFile(url, Path.Combine(directory, filename));
-            //job.Resume();
+			BitsNet.BitsManager.AddJob(url, "job" + file, directory);
 
         }
 
