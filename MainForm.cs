@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using Microsoft.Bits;
 using BitsNet;
 using System.Collections;
+using System.Globalization;
 
 namespace BitsMonitor
 {
@@ -45,7 +46,6 @@ namespace BitsMonitor
         {
             _bitsJobs = BitsManager.GetAllJobs();
             RefreshList(_bitsJobs);
-			this.Text += ".";
 			_lastRefresh = DateTime.Now;
 		}
 
@@ -59,7 +59,7 @@ namespace BitsMonitor
             {
                 ListViewItem lvi = new ListViewItem(j.GetHashCode().ToString());
                 lvi.SubItems[0].Text = j.FileName;
-                lvi.SubItems.AddRange(new string[] {j.DisplayName, j.PercentComplete.ToString("F2"), j.JobStateDescription, j.Url });
+                lvi.SubItems.AddRange(new string[] {j.DisplayName, j.PercentComplete.ToString("P2", CultureInfo.InvariantCulture), j.JobStateDescription, j.Url });
                 lstDownloads.Items.Add(lvi);
 				lvi.Tag = j.Guid;
             }
