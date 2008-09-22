@@ -10,15 +10,18 @@ using Microsoft.Bits;
 using BitsNet;
 using System.Collections;
 using System.Globalization;
+using BitsMonitor.Properties;
 
 namespace BitsMonitor
 {
     public partial class MainForm : Form
     {
-        private List<BitsJob> _bitsJobs;
-		private TimeSpan _refreshInterval;
+		private Dictionary<Guid, BitsJob> _bitsJobs;
+		private bool _listFilled = false;
 		private DateTime _lastRefresh;
-		private string _lastTsmiClicked;
+
+		private string _lastResumedJob = string.Empty;
+		private uint _resumeCount = 0;
 
         public MainForm()
         {
@@ -26,46 +29,144 @@ namespace BitsMonitor
 			InitializeGUI();
             RefreshJobs();
 			EnableActionsFromGui(false);
+			timer.Enabled = true;
         }
 
 		private void InitializeGUI()
 		{
-			this.tsddbRefreshInterval.DropDownItems[0].PerformClick();
 		}
 
 		private void ResetTimers()
 		{
 			this.timer.Enabled = true;
-			this.timer.Interval = (int)_refreshInterval.TotalMilliseconds;
-			this.timerRemaining.Enabled = true;
-			this.timerRemaining.Interval = 1000;
+		}
+
+		#region RefreshJobs
+
+		private void RefreshJobs()
+        {
+			_bitsJobs = BitsManager.GetAllJobs();
+			if (!_listFilled)
+				FillList(_bitsJobs);
+			else
+				RefreshList(_bitsJobs);
 			_lastRefresh = DateTime.Now;
 		}
 
-        private void RefreshJobs()
-        {
-            _bitsJobs = BitsManager.GetAllJobs();
-            RefreshList(_bitsJobs);
-			_lastRefresh = DateTime.Now;
+		private void FillList(Dictionary<Guid, BitsJob> jobs)
+		{
+			lstDownloads.Items.Clear();
+
+			foreach (BitsJob j in jobs.Values)
+			{
+				AddBitsJob2List(j);
+			}
+			_listFilled = true;
 		}
 
-        private void RefreshList(List<BitsJob> jobs)
+		private void AddBitsJob2List(BitsJob j)
+		{
+			ListViewItem lvi = new ListViewItem(j.GetHashCode().ToString());
+			lvi.SubItems[0].Text = j.FileName;
+			lvi.SubItems.AddRange(new string[] { j.DisplayName, j.PercentComplete.ToString("P2", CultureInfo.InvariantCulture), j.JobStateDescription, j.Url });
+			lvi.Tag = j.Guid;
+			lstDownloads.Items.Add(lvi);
+		}
+
+		private void CheckAndAddNewJobs( Dictionary<Guid,BitsJob> jobs )
+		{
+			if (jobs.Count == lstDownloads.Items.Count)
+				return;
+			if (jobs.Count < lstDownloads.Items.Count)
+			{
+				RemoveJobsFromList(jobs);
+			}
+			else
+			{
+				AddJobsToList(jobs);
+			}
+				
+		}
+
+		private void RemoveJobsFromList(Dictionary<Guid, BitsJob> jobs)
+		{
+			List<int> indices = new List<int>(lstDownloads.Items.Count);
+			for (int i = 0; i < lstDownloads.Items.Count; i++)
+			{
+				Guid g = (Guid)lstDownloads.Items[i].Tag;
+				if (!jobs.ContainsKey(g))
+					indices.Add(i);
+			}
+			for (int i = indices.Count - 1; i >= 0; i--)
+			{
+				lstDownloads.Items.RemoveAt(indices[i]);
+			}
+		}
+
+		private void AddJobsToList(Dictionary<Guid, BitsJob> jobs)
+		{
+			List<Guid> newGuids = new List<Guid>(jobs.Count);
+			newGuids.AddRange(jobs.Keys);
+			for (int i = 0; i < lstDownloads.Items.Count; i++)
+			{
+				Guid g = (Guid)lstDownloads.Items[i].Tag;
+				if (newGuids.Contains(g))
+					newGuids.Remove(g);
+			}
+
+			for (int i = 0; i < newGuids.Count; i++)
+			{
+				AddBitsJob2List(jobs[newGuids[i]]);
+			}
+		}
+
+		private void RefreshList( Dictionary<Guid,BitsJob> jobs)
         {
-            Cursor actual = Cursor.Current;
-            Cursor.Current = Cursors.WaitCursor;
-            this.lstDownloads.Items.Clear();
+			CheckAndAddNewJobs(jobs);
 
-            foreach (BitsJob j in jobs)
-            {
-                ListViewItem lvi = new ListViewItem(j.GetHashCode().ToString());
-                lvi.SubItems[0].Text = j.FileName;
-                lvi.SubItems.AddRange(new string[] {j.DisplayName, j.PercentComplete.ToString("P2", CultureInfo.InvariantCulture), j.JobStateDescription, j.Url });
-                lstDownloads.Items.Add(lvi);
-				lvi.Tag = j.Guid;
-            }
+			for (int i = 0; i < lstDownloads.Items.Count; i++)
+			{
+				Guid g = (Guid)lstDownloads.Items[i].Tag;
+				BitsJob j = jobs[g];
+				lstDownloads.Items[i].SubItems[1] = new ListViewItem.ListViewSubItem(lstDownloads.Items[i], j.DisplayName);
+				lstDownloads.Items[i].SubItems[2] = new ListViewItem.ListViewSubItem(lstDownloads.Items[i], j.PercentComplete.ToString("P2", CultureInfo.InvariantCulture));
+				lstDownloads.Items[i].SubItems[3] = new ListViewItem.ListViewSubItem(lstDownloads.Items[i], j.JobStateDescription );
+				lstDownloads.Items[i].SubItems[4] = new ListViewItem.ListViewSubItem(lstDownloads.Items[i], j.Url );
 
-            Cursor.Current = actual;
+				ResumeOrCompleteJob(j, jobs.Count);
+			}
         }
+
+		private void ResumeOrCompleteJob(BitsJob job, int jobsCount)
+		{
+			switch (job.JobState)
+			{
+				case BitsJobState.TRANSIENT_ERROR:
+					if (jobsCount == 1)
+					{
+						if (job.DisplayName != _lastResumedJob)
+						{
+							_lastResumedJob = job.DisplayName;
+							_resumeCount = 0;
+							job.ResumeJob();
+						}
+						else
+						{
+							_resumeCount++;
+							if (_resumeCount == 3)
+								notifyIcon.ShowBalloonTip(1000, "Eror!", "Error while downloading {0}. 3 retries already failed", ToolTipIcon.Error);
+						}
+					}
+					break;
+
+				case BitsJobState.TRANSFERRED:
+					job.CompleteJob();
+					notifyIcon.ShowBalloonTip(1000, "Download info", String.Format("Download of {0} completed", job.DisplayName), ToolTipIcon.Info);
+					break;
+			}
+		}
+
+#endregion
 
 		private void lstDownloads_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
 		{
@@ -112,7 +213,7 @@ namespace BitsMonitor
             return jobGuids;
 		}
 
-		#region perform Cancel,Resume,Complete on selected jobs...
+		#region perform JobActions (Add, Resume, Suspend, Complete, Cancel)
 
 		private void CancelJobs()
         {
@@ -134,8 +235,6 @@ namespace BitsMonitor
 			BitsManager.PerformActions(this.GetSelectedJobGuids(), BitsJobActions.COMPLETE_JOB);
 		}
 
-		#endregion
-
 		private void AddJob()
         {
             AddJob addjob = new AddJob();
@@ -149,7 +248,6 @@ namespace BitsMonitor
         {
 			ResumeJobs();
         }
-
 
 		private void btnCancel_Click(object sender, EventArgs e)
 		{
@@ -171,73 +269,116 @@ namespace BitsMonitor
             this.AddJob();
 		}
 
+		#endregion
+
 		#region Jobs status refreshing
 
-		private void tsddbRefreshInterval_DropDownItemClicked(object sender, ToolStripItemClickedEventArgs e)
-		{
-			ToolStripMenuItem tsmi = (ToolStripMenuItem)tsddbRefreshInterval.DropDownItems[e.ClickedItem.Name];
-			if (tsmi.Checked)
-				return;
-
-			this.tsddbRefreshInterval.Text = tsmi.Text;
-			if (!(tsmi.Tag is string))
-			{
-				MessageBox.Show( "Inproper value for autorefresh... 10s used!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error );
-				_refreshInterval = new TimeSpan(0, 0, 10);
-				return;
-			}
-			_refreshInterval = new TimeSpan( 0, 0, int.Parse( tsmi.Tag as string ) );
-			if ( !string.IsNullOrEmpty( _lastTsmiClicked ) )
-				(this.tsddbRefreshInterval.DropDownItems[_lastTsmiClicked] as ToolStripMenuItem).Checked = false;
-			_lastTsmiClicked = tsmi.Name;
-			tsmi.Checked = true;
-			ResetTimers();
-		}
-
-		/// <summary>
-		/// Refreshes the list of active (non completed) jobs.
-		/// Preserves selection state of the jobs on the list.
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
 		private void timer_Tick(object sender, EventArgs e)
 		{
-			EnableTimers(false);
-			Cursor currentCursor = Cursor.Current;
-			Cursor.Current = Cursors.WaitCursor;
-
-			int indicesCount = lstDownloads.SelectedIndices.Count;
-			int[] indices = new int[indicesCount];
-			lstDownloads.SelectedIndices.CopyTo(indices, 0);
-
 			RefreshJobs();
+		}
 
-			for (int i = 0; i < indicesCount; i++)
+		#endregion
+
+		#region Save/Load Window State
+
+		private void LoadSettings()
+		{
+			if (Settings.Default.WindowHeight == -1)
+				this.Height = 300;
+			else
+				this.Height = Settings.Default.WindowHeight;
+
+			if (Settings.Default.WindowWidth == -1)
+				this.Width = 473;
+			else
+				this.Width = Settings.Default.WindowWidth;
+
+			if (Settings.Default.WindowLocation == new Point(-1, -1))
+				this.Location = new Point(Screen.PrimaryScreen.WorkingArea.Width / 2, Screen.PrimaryScreen.WorkingArea.Height / 2);
+			else
+				this.Location = Settings.Default.WindowLocation;
+
+			if (string.IsNullOrEmpty(Settings.Default.ColumnsWidth))
+				return;
+			string[] columnWidthStrings = Settings.Default.ColumnsWidth.Split(';');
+			for (int i = 0; i < lstDownloads.Columns.Count; i++)
 			{
-				lstDownloads.Items[indices[i]].Focused = true;
-				lstDownloads.Items[indices[i]].Selected = true;
+				int width = int.Parse(columnWidthStrings[i], CultureInfo.InvariantCulture);
+				lstDownloads.Columns[i].Width = width;
 			}
 
-			Cursor.Current = currentCursor;
-			EnableTimers(true);
 		}
 
-		/// <summary>
-		/// Enables/disables timers.
-		/// </summary>
-		/// <param name="state"></param>
-		private void EnableTimers(bool state)
+		private void SaveSettings()
 		{
-			this.timer.Enabled = state;
-			this.timerRemaining.Enabled = state;
+			Settings.Default.WindowWidth = this.Width;
+			Settings.Default.WindowHeight = this.Height;
+			if ( ( this.Location.X != -32000 ) && ( this.Location.Y == -32000 ) )
+				Settings.Default.WindowLocation = this.Location;
+			StringBuilder sb = new StringBuilder();
+			char delimiter = ';';
+			for (int i = 0; i < lstDownloads.Columns.Count; i++)
+			{
+				sb.Append(lstDownloads.Columns[i].Width);
+				sb.Append(delimiter);
+			}
+			Settings.Default.ColumnsWidth = sb.ToString();
+			Settings.Default.Save();
+			
 		}
 
-		private void timerRemaining_Tick(object sender, EventArgs e)
+		private void MainForm_Load(object sender, EventArgs e)
 		{
-			uint seconds = (uint)(DateTime.Now - _lastRefresh).TotalSeconds;
-			this.lblSeconds.Text = ((uint)_refreshInterval.TotalSeconds -seconds).ToString();
+			LoadSettings();
 		}
+
+		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+		{
+			SaveSettings();
+		}
+
 		#endregion
+
+		#region notify icon
+
+		private void tsmiRestoreMinimize_Click(object sender, EventArgs e)
+		{
+			if (this.WindowState == FormWindowState.Maximized || this.WindowState == FormWindowState.Normal)
+			{
+				this.WindowState = FormWindowState.Minimized;
+			}
+			else
+			{
+				this.WindowState = FormWindowState.Normal;
+			}
+		}
+
+		private void tsmiExit_Click(object sender, EventArgs e)
+		{
+			Application.Exit();
+		}
+
+		private void MainForm_Resize(object sender, EventArgs e)
+		{
+			if (this.WindowState == FormWindowState.Minimized)
+				this.ShowInTaskbar = false;
+			else
+				this.ShowInTaskbar = true;
+		}
+
+		private void notifyIcon_MouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			tsmiRestoreMinimize_Click(this, EventArgs.Empty);
+		}
+
+		#endregion
+
+		private void btnAbout_Click(object sender, EventArgs e)
+		{
+			About about = new About();
+			about.ShowDialog(this);
+		}
 
 	}
 }
