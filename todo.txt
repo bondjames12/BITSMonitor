@@ -1,0 +1,3 @@
+﻿1. Autocompletion (after file is being downloaded)
+	1a. Baloon tooltip with information that file was downloaded.
+2. Auto resume jobs in 'TRANSIENT_ERROR' state (if no other jobs are active)
