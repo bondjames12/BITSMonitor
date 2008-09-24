@@ -191,17 +191,18 @@ namespace BitsMonitor
 
 		private bool IsCompletingPossible()
 		{
-			bool output = true;
 			if (lstDownloads.SelectedItems.Count < 1)
-			{
-				output = false;
-				return output;
-			}
+				return false;
+			// this will be very, very rare case...
+			if (_bitsJobs.Count == 0)
+				return false;
 
-			string transferred = BitsJobState.TRANSFERRED.ToString();
+			Guid g;
+			bool output = true;
 			foreach (ListViewItem lvi in lstDownloads.SelectedItems)
 			{
-				if (lvi.SubItems[4].Text != transferred)
+				g = (Guid)lvi.Tag;
+				if (_bitsJobs[g].JobState != BitsJobState.TRANSFERRED)
 				{
 					output = false;
 					break;
@@ -412,15 +413,17 @@ namespace BitsMonitor
 		private BitsJob GetActiveJob()
 		{
 			BitsJob job = null;
+			BitsJob tempjob = null;
+			Guid g;
 			for (int i = 0; i < lstDownloads.Items.Count; i++)
 			{
-				string s = lstDownloads.Items[i].SubItems[3].Text;
-				if (s.Contains("CONNE") || s.Contains("TRANSFERRING"))
+				g = (Guid)lstDownloads.Items[i].Tag;
+				tempjob = _bitsJobs[g];
+				if (tempjob.JobState == BitsJobState.CONNECTING || tempjob.JobState == BitsJobState.TRANSFERRING)
 				{
-					job = BitsManager.GetAllJobs()[(Guid)lstDownloads.Items[i].Tag];
+					job = tempjob;
 					break;
 				}
-
 			}
 			return job;
 		}
