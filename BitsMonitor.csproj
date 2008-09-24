@@ -65,14 +65,12 @@
     <Compile Include="AddJob.Designer.cs">
       <DependentUpon>AddJob.cs</DependentUpon>
     </Compile>
-    <Compile Include="BitsManager.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="InteropBits.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="About.resx">
@@ -122,6 +120,12 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="todo.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="BitsNet\BitsNet.csproj">
+      <Project>{BEE9970C-1940-475E-B17F-704752AF9BE0}</Project>
+      <Name>BitsNet</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
