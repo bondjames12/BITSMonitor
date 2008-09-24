@@ -137,6 +137,12 @@ namespace BitsMonitor
 			}
         }
 
+		private void ResetRetriesCounter()
+		{
+			_lastResumedJob = string.Empty;
+			_resumeCount = 0;
+		}
+
 		private void ResumeOrCompleteJob(BitsJob job, int jobsCount)
 		{
 			switch (job.JobState)
@@ -154,7 +160,7 @@ namespace BitsMonitor
 						{
 							_resumeCount++;
 							if (_resumeCount == 3)
-								notifyIcon.ShowBalloonTip(1000, "Eror!", "Error while downloading {0}. 3 retries already failed", ToolTipIcon.Error);
+								notifyIcon.ShowBalloonTip(1000, "Eror!", String.Format("Error while downloading {0}. 3 retries already failed", job.DisplayName), ToolTipIcon.Error);
 						}
 					}
 					break;
@@ -249,6 +255,7 @@ namespace BitsMonitor
         private void ResumeJobs()
         {
 			BitsManager.PerformActions(GetSelectedJobGuids(), BitsJobActions.RESUME_JOB);
+			ResetRetriesCounter();
         }
 
 		private void SuspendJobs()
@@ -258,11 +265,7 @@ namespace BitsMonitor
 
         private void CompleteJobs()
         {
-			string question = "Are you sure you want to complete the job?" + Environment.NewLine +
-							  "[Completing the notfinished job means removing" + Environment.NewLine +
-							  "it without possibility to download the rest of the file";
-			if ( MessageBox.Show( this, question, "Completing the job?", MessageBoxButtons.YesNo, MessageBoxIcon.Question )	== DialogResult.Yes )
-				BitsManager.PerformActions(this.GetSelectedJobGuids(), BitsJobActions.COMPLETE_JOB);
+			BitsManager.PerformActions(this.GetSelectedJobGuids(), BitsJobActions.COMPLETE_JOB);
 		}
 
 		private void AddJob()
