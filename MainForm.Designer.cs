@@ -58,6 +58,7 @@
 			this.tsmiRestoreMinimize = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiExit = new System.Windows.Forms.ToolStripMenuItem();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripMenu.SuspendLayout();
 			this.contextMenu.SuspendLayout();
 			this.applicationContextMenu.SuspendLayout();
@@ -70,6 +71,7 @@
             this.toolStripSeparator1,
             this.tsbStart,
             this.tsbSuspend,
+            this.toolStripSeparator3,
             this.tsbComplete,
             this.toolStripSeparator2,
             this.tsbCancel,
@@ -300,6 +302,11 @@
 			this.tsmiExit.Text = "Exit";
 			this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
 			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -351,6 +358,7 @@
 		private System.Windows.Forms.ToolStripMenuItem tsmiRestoreMinimize;
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiExit;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }
 
