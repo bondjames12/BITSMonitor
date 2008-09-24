@@ -148,7 +148,7 @@ namespace BitsMonitor
 						{
 							_lastResumedJob = job.DisplayName;
 							_resumeCount = 0;
-							job.ResumeJob();
+							BitsManager.ResumeJob(job.Guid);
 						}
 						else
 						{
@@ -160,7 +160,7 @@ namespace BitsMonitor
 					break;
 
 				case BitsJobState.TRANSFERRED:
-					job.CompleteJob();
+					BitsManager.CompleteJob(job.Guid);
 					notifyIcon.ShowBalloonTip(1000, "Download info", String.Format("Download of {0} completed", job.DisplayName), ToolTipIcon.Info);
 					break;
 			}
@@ -178,12 +178,36 @@ namespace BitsMonitor
 			tsmiCancel.Enabled = state;
 			tsmiStart.Enabled = state;
 			tsmiPause.Enabled = state;
-			tsmiComplete.Enabled = state;
 
 			tsbCancel.Enabled = state;
 			tsbSuspend.Enabled = state;
 			tsbStart.Enabled = state;
-			tsbComplete.Enabled = state;
+
+			// completing should be possible only for jobs that state is 'TRANSFERRED'
+			bool completing = IsCompletingPossible();
+			tsmiComplete.Enabled = completing;
+			tsbComplete.Enabled = completing;
+		}
+
+		private bool IsCompletingPossible()
+		{
+			bool output = true;
+			if (lstDownloads.SelectedItems.Count < 1)
+			{
+				output = false;
+				return output;
+			}
+
+			string transferred = BitsJobState.TRANSFERRED.ToString();
+			foreach (ListViewItem lvi in lstDownloads.SelectedItems)
+			{
+				if (lvi.SubItems[4].Text != transferred)
+				{
+					output = false;
+					break;
+				}
+			}
+			return output;
 		}
 
         private bool IsJobSelected()
@@ -217,7 +241,8 @@ namespace BitsMonitor
 
 		private void CancelJobs()
         {
-			BitsManager.PerformActions(this.GetSelectedJobGuids(), BitsJobActions.CANCEL_JOB);
+			if ( MessageBox.Show( this, "Are you sure you want to cancel (delete) the job?", "Deleting the job...?", MessageBoxButtons.YesNo, MessageBoxIcon.Question ) == DialogResult.Yes )
+				BitsManager.PerformActions(this.GetSelectedJobGuids(), BitsJobActions.CANCEL_JOB);
         }
 
         private void ResumeJobs()
@@ -232,7 +257,11 @@ namespace BitsMonitor
 
         private void CompleteJobs()
         {
-			BitsManager.PerformActions(this.GetSelectedJobGuids(), BitsJobActions.COMPLETE_JOB);
+			string question = "Are you sure you want to complete the job?" + Environment.NewLine +
+							  "[Completing the notfinished job means removing" + Environment.NewLine +
+							  "it without possibility to download the rest of the file";
+			if ( MessageBox.Show( this, question, "Completing the job?", MessageBoxButtons.YesNo, MessageBoxIcon.Question )	== DialogResult.Yes )
+				BitsManager.PerformActions(this.GetSelectedJobGuids(), BitsJobActions.COMPLETE_JOB);
 		}
 
 		private void AddJob()
