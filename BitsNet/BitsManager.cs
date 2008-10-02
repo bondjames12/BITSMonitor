@@ -279,6 +279,11 @@ namespace BitsNet
             _jobs[jobGuid].ResumeJob();
         }
 
+		public static void SuspendJob(Guid jobGuid)
+		{
+			_jobs[jobGuid].SuspendJob();
+		}
+
 
         /// <summary>
         /// Performs choosen action on all selected jobs
