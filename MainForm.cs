@@ -18,10 +18,6 @@ namespace BitsMonitor
     {
 		private Dictionary<Guid, BitsJob> _bitsJobs;
 		private bool _listFilled = false;
-		private DateTime _lastRefresh;
-
-		private string _lastResumedJob = string.Empty;
-		private uint _resumeCount = 0;
 
         public MainForm()
         {
@@ -50,7 +46,6 @@ namespace BitsMonitor
 				FillList(_bitsJobs);
 			else
 				RefreshList(_bitsJobs);
-			_lastRefresh = DateTime.Now;
 		}
 
 		private void FillList(Dictionary<Guid, BitsJob> jobs)
@@ -68,7 +63,8 @@ namespace BitsMonitor
 		{
 			ListViewItem lvi = new ListViewItem(j.GetHashCode().ToString());
 			lvi.SubItems[0].Text = j.FileName;
-			lvi.SubItems.AddRange(new string[] { j.DisplayName, j.PercentComplete.ToString("P2", CultureInfo.InvariantCulture), j.JobStateDescription, j.Url });
+
+			lvi.SubItems.AddRange(new string[] { j.DisplayName, j.PercentComplete.ToString("P2", CultureInfo.InvariantCulture), j.JobStateDescription, j.Url, ((float)(j.BytesTotal/1024/1024)).ToString("N", CultureInfo.InvariantCulture), (j.BytesTransferred/1024/1024).ToString("N",CultureInfo.InvariantCulture) });
 			lvi.Tag = j.Guid;
 			lstDownloads.Items.Add(lvi);
 		}
@@ -128,47 +124,59 @@ namespace BitsMonitor
 			{
 				Guid g = (Guid)lstDownloads.Items[i].Tag;
 				BitsJob j = jobs[g];
-				lstDownloads.Items[i].SubItems[1] = new ListViewItem.ListViewSubItem(lstDownloads.Items[i], j.DisplayName);
-				lstDownloads.Items[i].SubItems[2] = new ListViewItem.ListViewSubItem(lstDownloads.Items[i], j.PercentComplete.ToString("P2", CultureInfo.InvariantCulture));
-				lstDownloads.Items[i].SubItems[3] = new ListViewItem.ListViewSubItem(lstDownloads.Items[i], j.JobStateDescription );
-				lstDownloads.Items[i].SubItems[4] = new ListViewItem.ListViewSubItem(lstDownloads.Items[i], j.Url );
-
-				ResumeOrCompleteJob(j, jobs.Count);
+				lstDownloads.Items[i].SubItems[2] = new ListViewItem.ListViewSubItem(lstDownloads.Items[i], (j.PercentComplete).ToString("00.00 %", CultureInfo.InvariantCulture)); 
+				lstDownloads.Items[i].SubItems[3] = new ListViewItem.ListViewSubItem(lstDownloads.Items[i], j.JobStateDescription);
+				lstDownloads.Items[i].SubItems[6] = new ListViewItem.ListViewSubItem(lstDownloads.Items[i], (j.BytesTransferred/1048576.0).ToString("N",CultureInfo.InvariantCulture));
 			}
+			ColourJobs();
+			AutoCompleteJobs();
         }
 
-		private void ResetRetriesCounter()
+		private void ColourJobs()
 		{
-			_lastResumedJob = string.Empty;
-			_resumeCount = 0;
+			for (int i = 0; i < lstDownloads.Items.Count; i++)
+			{
+				Guid g = (Guid)lstDownloads.Items[i].Tag;
+				if (!_bitsJobs.ContainsKey(g))
+					continue;
+				switch (_bitsJobs[g].JobState)
+				{
+					case BitsJobState.TRANSFERRING:
+						lstDownloads.Items[i].BackColor = Color.LightGreen;
+						break;
+					case BitsJobState.TRANSIENT_ERROR:
+						lstDownloads.Items[i].BackColor = Color.Coral;
+						break;
+					case BitsJobState.ERROR:
+						lstDownloads.Items[i].BackColor = Color.Coral;
+						break;
+					case BitsJobState.QUEUED:
+						lstDownloads.Items[i].BackColor = Color.LightSkyBlue;
+						break;
+					default:
+						lstDownloads.Items[i].BackColor = Color.White;
+						break;
+				}
+			}
 		}
 
-		private void ResumeOrCompleteJob(BitsJob job, int jobsCount)
+		private void MakeAllJobsActive()
 		{
-			switch (job.JobState)
-			{
-				case BitsJobState.TRANSIENT_ERROR:
-					if (jobsCount == 1)
-					{
-						if (job.DisplayName != _lastResumedJob)
-						{
-							_lastResumedJob = job.DisplayName;
-							_resumeCount = 0;
-							BitsManager.ResumeJob(job.Guid);
-						}
-						else
-						{
-							_resumeCount++;
-							if (_resumeCount == 3)
-								notifyIcon.ShowBalloonTip(1000, "Eror!", String.Format("Error while downloading {0}. 3 retries already failed", job.DisplayName), ToolTipIcon.Error);
-						}
-					}
-					break;
+			BitsManager.PerformActions(_bitsJobs.Keys.ToList<Guid>(), BitsJobActions.RESUME_JOB);
+		}
 
-				case BitsJobState.TRANSFERRED:
-					BitsManager.CompleteJob(job.Guid);
-					notifyIcon.ShowBalloonTip(1000, "Download info", String.Format("Download of {0} completed", job.DisplayName), ToolTipIcon.Info);
-					break;
+		private void AutoCompleteJobs( )
+		{
+			for (int i = 0; i < lstDownloads.Items.Count; i++)
+			{
+				Guid g = (Guid)lstDownloads.Items[i].Tag;
+				if (!_bitsJobs.ContainsKey(g))
+					continue;
+				BitsJob j = _bitsJobs[g];
+				if (j.JobState == BitsJobState.TRANSFERRED)
+				{
+					BitsManager.CompleteJob(j.Guid);
+				}
 			}
 		}
 
@@ -255,7 +263,6 @@ namespace BitsMonitor
         private void ResumeJobs()
         {
 			BitsManager.PerformActions(GetSelectedJobGuids(), BitsJobActions.RESUME_JOB);
-			ResetRetriesCounter();
         }
 
 		private void SuspendJobs()
@@ -337,6 +344,8 @@ namespace BitsMonitor
 			string[] columnWidthStrings = Settings.Default.ColumnsWidth.Split(';');
 			for (int i = 0; i < lstDownloads.Columns.Count; i++)
 			{
+				if (string.IsNullOrEmpty(columnWidthStrings[i]))
+					continue;
 				int width = int.Parse(columnWidthStrings[i], CultureInfo.InvariantCulture);
 				lstDownloads.Columns[i].Width = width;
 			}
@@ -369,6 +378,8 @@ namespace BitsMonitor
 		private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
 		{
 			SaveSettings();
+			// TODO: uncomment!
+			//MakeAllJobsActive();
 		}
 
 		#endregion
@@ -421,6 +432,8 @@ namespace BitsMonitor
 			for (int i = 0; i < lstDownloads.Items.Count; i++)
 			{
 				g = (Guid)lstDownloads.Items[i].Tag;
+				if (!_bitsJobs.ContainsKey(g))
+					continue;
 				tempjob = _bitsJobs[g];
 				if (tempjob.JobState == BitsJobState.CONNECTING || tempjob.JobState == BitsJobState.TRANSFERRING)
 				{
@@ -445,6 +458,26 @@ namespace BitsMonitor
 		{
 			if (this.WindowState == FormWindowState.Minimized)
 				this.tsmiRestoreMinimize_Click(this, EventArgs.Empty);
+		}
+
+		private void lstDownloads_KeyDown(object sender, KeyEventArgs e)
+		{
+			if (e.Control && (e.KeyCode == Keys.A))
+			{
+				for (int i = 0; i < lstDownloads.Items.Count; i++)
+				{
+					lstDownloads.Items[i].Selected = true;
+				}
+			}
+		}
+
+		private void lstDownloads_MouseDoubleClick(object sender, MouseEventArgs e)
+		{
+			Guid g = (Guid)lstDownloads.GetItemAt(e.X, e.Y).Tag;
+
+			BitsJob j = _bitsJobs[g];
+			JobInfo jobInfo = new JobInfo(j);
+			jobInfo.ShowDialog(this);
 		}
 
 	}
