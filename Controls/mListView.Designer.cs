@@ -28,7 +28,13 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			components = new System.ComponentModel.Container();
+			this.SuspendLayout();
+			// 
+			// mListView
+			// 
+			this.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.mListView_ColumnClick);
+			this.ResumeLayout(false);
+
 		}
 
 		#endregion
