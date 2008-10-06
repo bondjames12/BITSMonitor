@@ -56,12 +56,15 @@ namespace BitsMonitor
             {
                 Environment.Exit(1);
             }
+			if (url.StartsWith("ftp"))
+			{
+				MessageBox.Show("FTP is not supported by BITS!");
+				Environment.Exit(2);
+			}
 
             if ((directory.Length == 2) && (directory[1] == ':'))
                 directory = directory + '\\';
 			string file = HttpUtility.UrlDecode( url.Substring( url.LastIndexOf("/") +1 ) );
-
-            string filename = HttpUtility.UrlDecode(url.Substring(url.LastIndexOf("/") + 1, (url.Length - url.LastIndexOf("/") - 1)));
 
 			BitsNet.BitsManager.AddJob(url, file, directory);
 
