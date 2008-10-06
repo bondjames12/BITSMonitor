@@ -53,6 +53,7 @@
 			this.tsmiRestoreMinimize = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiExit = new System.Windows.Forms.ToolStripMenuItem();
+			this.btnAutoRestart = new System.Windows.Forms.ToolStripButton();
 			this.lstDownloads = new BitsMonitor.mListView();
 			this.FileNameColumn = new System.Windows.Forms.ColumnHeader();
 			this.JobColumn = new System.Windows.Forms.ColumnHeader();
@@ -61,6 +62,7 @@
 			this.UrlColumn = new System.Windows.Forms.ColumnHeader();
 			this.sizeColumn = new System.Windows.Forms.ColumnHeader();
 			this.transferredColumn = new System.Windows.Forms.ColumnHeader();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripMenu.SuspendLayout();
 			this.contextMenu.SuspendLayout();
 			this.applicationContextMenu.SuspendLayout();
@@ -77,7 +79,9 @@
             this.tsbComplete,
             this.toolStripSeparator2,
             this.tsbCancel,
-            this.btnAbout});
+            this.btnAbout,
+            this.toolStripSeparator4,
+            this.btnAutoRestart});
 			this.toolStripMenu.Location = new System.Drawing.Point(0, 0);
 			this.toolStripMenu.Name = "toolStripMenu";
 			this.toolStripMenu.Size = new System.Drawing.Size(457, 25);
@@ -263,6 +267,17 @@
 			this.tsmiExit.Text = "Exit";
 			this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
 			// 
+			// btnAutoRestart
+			// 
+			this.btnAutoRestart.CheckOnClick = true;
+			this.btnAutoRestart.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+			this.btnAutoRestart.DoubleClickEnabled = true;
+			this.btnAutoRestart.Image = ((System.Drawing.Image)(resources.GetObject("btnAutoRestart.Image")));
+			this.btnAutoRestart.ImageTransparentColor = System.Drawing.Color.Magenta;
+			this.btnAutoRestart.Name = "btnAutoRestart";
+			this.btnAutoRestart.Size = new System.Drawing.Size(76, 22);
+			this.btnAutoRestart.Text = "Auto Restart";
+			// 
 			// lstDownloads
 			// 
 			this.lstDownloads.AllowColumnReorder = true;
@@ -328,6 +343,11 @@
 			this.transferredColumn.Text = "Transferred";
 			this.transferredColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -383,6 +403,8 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ColumnHeader sizeColumn;
 		private System.Windows.Forms.ColumnHeader transferredColumn;
+		private System.Windows.Forms.ToolStripButton btnAutoRestart;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
     }
 }
 
