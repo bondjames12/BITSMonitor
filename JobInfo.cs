@@ -6,54 +6,36 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using BitsNet;
 
 namespace BitsMonitor
 {
 	public partial class JobInfo : Form
 	{
-		private bool _readOnly;
-		public bool ReadOnly
-		{
-			get { return _readOnly; }
-			set { _readOnly = value; }
-		}
+		private BitsJob _job;
 
-		public string JobName
-		{
-			get { return this.txtJobName.Text; }
-			set
-			{
-				if (!string.IsNullOrEmpty(value))
-					this.txtJobName.Text = value;
-			}
-		}
-
-		public string JobUrl
-		{
-			get { return this.txtJobUrl.Text; }
-			set
-			{
-				if (!string.IsNullOrEmpty(value))
-					this.txtJobUrl.Text = value;
-			}
-		}
-
-		public JobInfo()
+		public JobInfo( BitsJob j )
 		{
 			InitializeComponent();
+			this._job = j;
+			InitializeComponentEx();
 		}
 
-		protected void ReadOnlyChanged( )
+		private void InitializeComponentEx()
 		{
-			foreach (Control c in this.Controls)
-			{
-				c.Enabled = _readOnly;
-			}
+			this.txtJobUrl.Text = _job.Url;
+			this.txtJobName.Text = _job.DisplayName;
 		}
 
 		private void btn_Click(object sender, EventArgs e)
 		{
 			this.Close();
+		}
+
+		private void JobInfo_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+		{
+			if (e.KeyCode == Keys.Escape)
+				this.Close();
 		}
 	}
 }
