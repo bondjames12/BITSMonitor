@@ -64,7 +64,7 @@ namespace BitsMonitor
 			ListViewItem lvi = new ListViewItem(j.GetHashCode().ToString());
 			lvi.SubItems[0].Text = j.FileName;
 
-			lvi.SubItems.AddRange(new string[] { j.DisplayName, j.PercentComplete.ToString("P2", CultureInfo.InvariantCulture), j.JobStateDescription, j.Url, ((float)(j.BytesTotal/1024/1024)).ToString("N", CultureInfo.InvariantCulture), (j.BytesTransferred/1024/1024).ToString("N",CultureInfo.InvariantCulture) });
+			lvi.SubItems.AddRange(new string[] { j.DisplayName, j.PercentComplete.ToString("P2", CultureInfo.InvariantCulture), j.JobStateDescription, j.Url, (j.BytesTotal/1048576.0).ToString("N", CultureInfo.InvariantCulture), (j.BytesTransferred/1048576.0).ToString("N",CultureInfo.InvariantCulture) });
 			lvi.Tag = j.Guid;
 			lstDownloads.Items.Add(lvi);
 		}
@@ -127,6 +127,8 @@ namespace BitsMonitor
 				lstDownloads.Items[i].SubItems[2] = new ListViewItem.ListViewSubItem(lstDownloads.Items[i], (j.PercentComplete).ToString("00.00 %", CultureInfo.InvariantCulture)); 
 				lstDownloads.Items[i].SubItems[3] = new ListViewItem.ListViewSubItem(lstDownloads.Items[i], j.JobStateDescription);
 				lstDownloads.Items[i].SubItems[6] = new ListViewItem.ListViewSubItem(lstDownloads.Items[i], (j.BytesTransferred/1048576.0).ToString("N",CultureInfo.InvariantCulture));
+				if ( this.btnAutoRestart.Checked && ( ( j.JobState == BitsJobState.ERROR || ( j.JobState == BitsJobState.TRANSIENT_ERROR ) ) ) )
+					BitsManager.ResumeJob( j.Guid );
 			}
 			ColourJobs();
 			AutoCompleteJobs();
@@ -152,6 +154,12 @@ namespace BitsMonitor
 						break;
 					case BitsJobState.QUEUED:
 						lstDownloads.Items[i].BackColor = Color.LightSkyBlue;
+						break;
+					case BitsJobState.SUSPENDED:
+						lstDownloads.Items[i].BackColor = Color.Aquamarine;
+						break;
+					case BitsJobState.CONNECTING:
+						lstDownloads.Items[i].BackColor = Color.Lavender;
 						break;
 					default:
 						lstDownloads.Items[i].BackColor = Color.White;
@@ -349,7 +357,7 @@ namespace BitsMonitor
 				int width = int.Parse(columnWidthStrings[i], CultureInfo.InvariantCulture);
 				lstDownloads.Columns[i].Width = width;
 			}
-
+			this.btnAutoRestart.Checked = Settings.Default.AutoRestartJobs;
 		}
 
 		private void SaveSettings()
@@ -366,8 +374,8 @@ namespace BitsMonitor
 				sb.Append(delimiter);
 			}
 			Settings.Default.ColumnsWidth = sb.ToString();
+			Settings.Default.AutoRestartJobs = this.btnAutoRestart.Checked;
 			Settings.Default.Save();
-			
 		}
 
 		private void MainForm_Load(object sender, EventArgs e)
