@@ -36,16 +36,11 @@
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsbStart = new System.Windows.Forms.ToolStripButton();
 			this.tsbSuspend = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsbComplete = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsbCancel = new System.Windows.Forms.ToolStripButton();
 			this.btnAbout = new System.Windows.Forms.ToolStripButton();
-			this.lstDownloads = new System.Windows.Forms.ListView();
-			this.FileNameColumn = new System.Windows.Forms.ColumnHeader();
-			this.JobColumn = new System.Windows.Forms.ColumnHeader();
-			this.PercentColumn = new System.Windows.Forms.ColumnHeader();
-			this.jobStateColumn = new System.Windows.Forms.ColumnHeader();
-			this.UrlColumn = new System.Windows.Forms.ColumnHeader();
 			this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.tsmiStart = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiPause = new System.Windows.Forms.ToolStripMenuItem();
@@ -58,7 +53,14 @@
 			this.tsmiRestoreMinimize = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiExit = new System.Windows.Forms.ToolStripMenuItem();
-			this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+			this.lstDownloads = new BitsMonitor.mListView();
+			this.FileNameColumn = new System.Windows.Forms.ColumnHeader();
+			this.JobColumn = new System.Windows.Forms.ColumnHeader();
+			this.PercentColumn = new System.Windows.Forms.ColumnHeader();
+			this.jobStateColumn = new System.Windows.Forms.ColumnHeader();
+			this.UrlColumn = new System.Windows.Forms.ColumnHeader();
+			this.sizeColumn = new System.Windows.Forms.ColumnHeader();
+			this.transferredColumn = new System.Windows.Forms.ColumnHeader();
 			this.toolStripMenu.SuspendLayout();
 			this.contextMenu.SuspendLayout();
 			this.applicationContextMenu.SuspendLayout();
@@ -120,6 +122,11 @@
 			this.tsbSuspend.ToolTipText = "Suspends downloading of the specified job";
 			this.tsbSuspend.Click += new System.EventHandler(this.btnSuspend_Click);
 			// 
+			// toolStripSeparator3
+			// 
+			this.toolStripSeparator3.Name = "toolStripSeparator3";
+			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+			// 
 			// tsbComplete
 			// 
 			this.tsbComplete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -129,12 +136,14 @@
 			this.tsbComplete.Size = new System.Drawing.Size(23, 22);
 			this.tsbComplete.Text = "Complete Job";
 			this.tsbComplete.ToolTipText = "Completes Job";
+			this.tsbComplete.Visible = false;
 			this.tsbComplete.Click += new System.EventHandler(this.btnCompleteJob_Click);
 			// 
 			// toolStripSeparator2
 			// 
 			this.toolStripSeparator2.Name = "toolStripSeparator2";
 			this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+			this.toolStripSeparator2.Visible = false;
 			// 
 			// tsbCancel
 			// 
@@ -157,54 +166,6 @@
 			this.btnAbout.Size = new System.Drawing.Size(44, 22);
 			this.btnAbout.Text = "About";
 			this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
-			// 
-			// lstDownloads
-			// 
-			this.lstDownloads.AllowColumnReorder = true;
-			this.lstDownloads.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.FileNameColumn,
-            this.JobColumn,
-            this.PercentColumn,
-            this.jobStateColumn,
-            this.UrlColumn});
-			this.lstDownloads.ContextMenuStrip = this.contextMenu;
-			this.lstDownloads.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.lstDownloads.FullRowSelect = true;
-			this.lstDownloads.GridLines = true;
-			this.lstDownloads.HideSelection = false;
-			listViewItem1.Checked = true;
-			listViewItem1.StateImageIndex = 1;
-			this.lstDownloads.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
-			this.lstDownloads.Location = new System.Drawing.Point(0, 25);
-			this.lstDownloads.Name = "lstDownloads";
-			this.lstDownloads.Size = new System.Drawing.Size(457, 239);
-			this.lstDownloads.TabIndex = 1;
-			this.lstDownloads.UseCompatibleStateImageBehavior = false;
-			this.lstDownloads.View = System.Windows.Forms.View.Details;
-			this.lstDownloads.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.lstDownloads_ItemSelectionChanged);
-			// 
-			// FileNameColumn
-			// 
-			this.FileNameColumn.Text = "File Name";
-			this.FileNameColumn.Width = 211;
-			// 
-			// JobColumn
-			// 
-			this.JobColumn.Text = "Job";
-			// 
-			// PercentColumn
-			// 
-			this.PercentColumn.Text = "Complete";
-			this.PercentColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-			// 
-			// jobStateColumn
-			// 
-			this.jobStateColumn.Text = "State";
-			// 
-			// UrlColumn
-			// 
-			this.UrlColumn.Text = "Url";
 			// 
 			// contextMenu
 			// 
@@ -302,10 +263,70 @@
 			this.tsmiExit.Text = "Exit";
 			this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
 			// 
-			// toolStripSeparator3
+			// lstDownloads
 			// 
-			this.toolStripSeparator3.Name = "toolStripSeparator3";
-			this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
+			this.lstDownloads.AllowColumnReorder = true;
+			this.lstDownloads.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.FileNameColumn,
+            this.JobColumn,
+            this.PercentColumn,
+            this.jobStateColumn,
+            this.UrlColumn,
+            this.sizeColumn,
+            this.transferredColumn});
+			this.lstDownloads.ContextMenuStrip = this.contextMenu;
+			this.lstDownloads.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.lstDownloads.FullRowSelect = true;
+			this.lstDownloads.GridLines = true;
+			this.lstDownloads.HideSelection = false;
+			listViewItem1.Checked = true;
+			listViewItem1.StateImageIndex = 1;
+			this.lstDownloads.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem1});
+			this.lstDownloads.Location = new System.Drawing.Point(0, 25);
+			this.lstDownloads.Name = "lstDownloads";
+			this.lstDownloads.Size = new System.Drawing.Size(457, 239);
+			this.lstDownloads.TabIndex = 1;
+			this.lstDownloads.UseCompatibleStateImageBehavior = false;
+			this.lstDownloads.View = System.Windows.Forms.View.Details;
+			this.lstDownloads.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lstDownloads_MouseDoubleClick);
+			this.lstDownloads.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.lstDownloads_ItemSelectionChanged);
+			this.lstDownloads.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstDownloads_KeyDown);
+			// 
+			// FileNameColumn
+			// 
+			this.FileNameColumn.Text = "File Name";
+			this.FileNameColumn.Width = 211;
+			// 
+			// JobColumn
+			// 
+			this.JobColumn.Text = "Job";
+			// 
+			// PercentColumn
+			// 
+			this.PercentColumn.Text = "Complete";
+			this.PercentColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			// 
+			// jobStateColumn
+			// 
+			this.jobStateColumn.Text = "State";
+			// 
+			// UrlColumn
+			// 
+			this.UrlColumn.DisplayIndex = 6;
+			this.UrlColumn.Text = "Url";
+			// 
+			// sizeColumn
+			// 
+			this.sizeColumn.DisplayIndex = 4;
+			this.sizeColumn.Text = "Total Size";
+			this.sizeColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+			// 
+			// transferredColumn
+			// 
+			this.transferredColumn.DisplayIndex = 5;
+			this.transferredColumn.Text = "Transferred";
+			this.transferredColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
 			// MainForm
 			// 
@@ -335,7 +356,8 @@
         private System.Windows.Forms.ToolStripButton tsbStart;
         private System.Windows.Forms.ToolStripButton tsbSuspend;
         private System.Windows.Forms.ToolStripButton tsbCancel;
-        private System.Windows.Forms.ListView lstDownloads;
+        //private System.Windows.Forms.ListView lstDownloads;
+		private mListView lstDownloads;
         private System.Windows.Forms.ColumnHeader FileNameColumn;
         private System.Windows.Forms.ColumnHeader JobColumn;
         private System.Windows.Forms.ColumnHeader PercentColumn;
@@ -359,6 +381,8 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem tsmiExit;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+		private System.Windows.Forms.ColumnHeader sizeColumn;
+		private System.Windows.Forms.ColumnHeader transferredColumn;
     }
 }
 
