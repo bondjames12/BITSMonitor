@@ -88,7 +88,7 @@ namespace BitsMonitor
 		private void btnBrowse_Click(object sender, EventArgs e)
 		{
 			FolderBrowserDialog folderBrowse = new FolderBrowserDialog();
-			folderBrowse.ShowNewFolderButton = false;
+			folderBrowse.ShowNewFolderButton = true;
 			folderBrowse.Description = "Please choose destination folder for storing downloaded file";
 			if (folderBrowse.ShowDialog() == DialogResult.OK)
 			{
