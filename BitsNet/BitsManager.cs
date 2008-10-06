@@ -76,7 +76,7 @@ namespace BitsNet
             set { _description = value; }
         }
         
-        private ulong _bytesTotal;
+        private ulong _bytesTotal = 0;
 		/// <summary>
 		/// return the overall size of the transmitted file
 		/// </summary>
@@ -86,7 +86,7 @@ namespace BitsNet
             get { return _bytesTotal; }
         }
 
-        private ulong _bytesTransferred;
+		private ulong _bytesTransferred = 0;
 		/// <summary>
 		/// returns the amount of bytes already transferred
 		/// </summary>
@@ -359,9 +359,11 @@ namespace BitsNet
 		{
 			string newFileName = filename;
 			uint i = 0;
+			string extension = filename.Substring(filename.LastIndexOf(".")+1);
+			string noextFilename = filename.Substring(0, filename.LastIndexOf("."));
 			while (File.Exists(newFileName))
 			{
-				newFileName = string.Format("{0}-({1})", filename, i++);
+				newFileName = string.Format("{0}-({1}).{2}", noextFilename, i++, extension);
 			}
 			return newFileName;
 		}
