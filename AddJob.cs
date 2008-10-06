@@ -15,7 +15,7 @@ namespace BitsMonitor
     {
         private Regex _regex;
         // simple pattern for checking if text is similar to proper ftp/http address
-        private string urlPattern = @"^(http|ftp)://.+$";
+        private string urlPattern = @"^http://.+$";
 
         public string JobName
         {
