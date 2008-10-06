@@ -82,5 +82,17 @@ namespace BitsMonitor.Properties {
                 this["ColumnsWidth"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AutoRestartJobs {
+            get {
+                return ((bool)(this["AutoRestartJobs"]));
+            }
+            set {
+                this["AutoRestartJobs"] = value;
+            }
+        }
     }
 }
