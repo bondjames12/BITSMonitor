@@ -32,6 +32,11 @@ namespace BitsMonitor
 			get { return this.txtSaveIn.Text; }
 		}
 
+		public bool AutoStartJob
+		{
+			get { return this.cbxAutoRun.Checked; }
+			set { this.cbxAutoRun.Checked = value; }
+		}
         
         public AddJob()
         {
