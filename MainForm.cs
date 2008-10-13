@@ -126,8 +126,14 @@ namespace BitsMonitor
 				BitsJob j = jobs[g];
 				lstDownloads.Items[i].SubItems[2] = new ListViewItem.ListViewSubItem(lstDownloads.Items[i], (j.PercentComplete).ToString("00.00 %", CultureInfo.InvariantCulture)); 
 				lstDownloads.Items[i].SubItems[3] = new ListViewItem.ListViewSubItem(lstDownloads.Items[i], j.JobStateDescription);
+
+				if (j.BytesTotal == ulong.MaxValue)
+						lstDownloads.Items[i].SubItems[5] = new ListViewItem.ListViewSubItem(lstDownloads.Items[i], "?");
+				if ((lstDownloads.Items[i].SubItems[5].Text == "?") && (j.JobState == BitsJobState.TRANSFERRING))
+					lstDownloads.Items[i].SubItems[5] = new ListViewItem.ListViewSubItem(lstDownloads.Items[i], (j.BytesTotal / 1048576.0).ToString("N", CultureInfo.InvariantCulture));
+
 				lstDownloads.Items[i].SubItems[6] = new ListViewItem.ListViewSubItem(lstDownloads.Items[i], (j.BytesTransferred/1048576.0).ToString("N",CultureInfo.InvariantCulture));
-				if ( this.btnAutoRestart.Checked && ( ( j.JobState == BitsJobState.ERROR || ( j.JobState == BitsJobState.TRANSIENT_ERROR ) ) ) )
+				if ( this.tsmiAutoRestart.Checked && ( ( j.JobState == BitsJobState.ERROR || ( j.JobState == BitsJobState.TRANSIENT_ERROR ) ) ) )
 					BitsManager.ResumeJob( j.Guid );
 			}
 			ColourJobs();
@@ -286,9 +292,10 @@ namespace BitsMonitor
 		private void AddJob()
         {
             AddJob addjob = new AddJob();
+			addjob.AutoStartJob = this.tsmiAutoStart.Checked;
             if (addjob.ShowDialog(this) == DialogResult.OK)
             {
-				BitsManager.AddJob(addjob.Url, addjob.JobName, addjob.Directory);
+				BitsManager.AddJob(addjob.Url, addjob.JobName, addjob.Directory, addjob.AutoStartJob);
             }
         }
 
@@ -357,7 +364,8 @@ namespace BitsMonitor
 				int width = int.Parse(columnWidthStrings[i], CultureInfo.InvariantCulture);
 				lstDownloads.Columns[i].Width = width;
 			}
-			this.btnAutoRestart.Checked = Settings.Default.AutoRestartJobs;
+			this.tsmiAutoRestart.Checked = Settings.Default.AutoRestartJobs;
+			this.tsmiAutoStart.Checked = Settings.Default.AutoStartBitsJob;
 		}
 
 		private void SaveSettings()
@@ -374,7 +382,8 @@ namespace BitsMonitor
 				sb.Append(delimiter);
 			}
 			Settings.Default.ColumnsWidth = sb.ToString();
-			Settings.Default.AutoRestartJobs = this.btnAutoRestart.Checked;
+			Settings.Default.AutoStartBitsJob = this.tsmiAutoStart.Checked;
+			Settings.Default.AutoRestartJobs = this.tsmiAutoRestart.Checked;
 			Settings.Default.Save();
 		}
 
