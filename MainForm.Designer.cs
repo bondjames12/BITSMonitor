@@ -30,7 +30,7 @@
         {
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-			System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("{ \"url\", \"job\", \"%\" }");
+			System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
 			this.toolStripMenu = new System.Windows.Forms.ToolStrip();
 			this.tsbAddJob = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -41,6 +41,9 @@
 			this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsbCancel = new System.Windows.Forms.ToolStripButton();
 			this.btnAbout = new System.Windows.Forms.ToolStripButton();
+			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+			this.tsmiAutoRestart = new BitsMonitor.mToolStripCheckBox();
+			this.tsmiAutoStart = new BitsMonitor.mToolStripCheckBox();
 			this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.tsmiStart = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiPause = new System.Windows.Forms.ToolStripMenuItem();
@@ -53,7 +56,6 @@
 			this.tsmiRestoreMinimize = new System.Windows.Forms.ToolStripMenuItem();
 			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiExit = new System.Windows.Forms.ToolStripMenuItem();
-			this.btnAutoRestart = new System.Windows.Forms.ToolStripButton();
 			this.lstDownloads = new BitsMonitor.mListView();
 			this.FileNameColumn = new System.Windows.Forms.ColumnHeader();
 			this.JobColumn = new System.Windows.Forms.ColumnHeader();
@@ -62,7 +64,6 @@
 			this.UrlColumn = new System.Windows.Forms.ColumnHeader();
 			this.sizeColumn = new System.Windows.Forms.ColumnHeader();
 			this.transferredColumn = new System.Windows.Forms.ColumnHeader();
-			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripMenu.SuspendLayout();
 			this.contextMenu.SuspendLayout();
 			this.applicationContextMenu.SuspendLayout();
@@ -81,10 +82,11 @@
             this.tsbCancel,
             this.btnAbout,
             this.toolStripSeparator4,
-            this.btnAutoRestart});
+            this.tsmiAutoRestart,
+            this.tsmiAutoStart});
 			this.toolStripMenu.Location = new System.Drawing.Point(0, 0);
 			this.toolStripMenu.Name = "toolStripMenu";
-			this.toolStripMenu.Size = new System.Drawing.Size(457, 25);
+			this.toolStripMenu.Size = new System.Drawing.Size(614, 25);
 			this.toolStripMenu.TabIndex = 0;
 			this.toolStripMenu.Text = "toolStrip1";
 			// 
@@ -170,6 +172,29 @@
 			this.btnAbout.Size = new System.Drawing.Size(44, 22);
 			this.btnAbout.Text = "About";
 			this.btnAbout.Click += new System.EventHandler(this.btnAbout_Click);
+			// 
+			// toolStripSeparator4
+			// 
+			this.toolStripSeparator4.Name = "toolStripSeparator4";
+			this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+			// 
+			// tsmiAutoRestart
+			// 
+			this.tsmiAutoRestart.BackColor = System.Drawing.Color.Transparent;
+			this.tsmiAutoRestart.Checked = false;
+			this.tsmiAutoRestart.CheckState = System.Windows.Forms.CheckState.Unchecked;
+			this.tsmiAutoRestart.Name = "tsmiAutoRestart";
+			this.tsmiAutoRestart.Size = new System.Drawing.Size(88, 22);
+			this.tsmiAutoRestart.Text = "AutoRestart";
+			// 
+			// tsmiAutoStart
+			// 
+			this.tsmiAutoStart.BackColor = System.Drawing.Color.Transparent;
+			this.tsmiAutoStart.Checked = false;
+			this.tsmiAutoStart.CheckState = System.Windows.Forms.CheckState.Unchecked;
+			this.tsmiAutoStart.Name = "tsmiAutoStart";
+			this.tsmiAutoStart.Size = new System.Drawing.Size(76, 22);
+			this.tsmiAutoStart.Text = "AutoStart";
 			// 
 			// contextMenu
 			// 
@@ -267,17 +292,6 @@
 			this.tsmiExit.Text = "Exit";
 			this.tsmiExit.Click += new System.EventHandler(this.tsmiExit_Click);
 			// 
-			// btnAutoRestart
-			// 
-			this.btnAutoRestart.CheckOnClick = true;
-			this.btnAutoRestart.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-			this.btnAutoRestart.DoubleClickEnabled = true;
-			this.btnAutoRestart.Image = ((System.Drawing.Image)(resources.GetObject("btnAutoRestart.Image")));
-			this.btnAutoRestart.ImageTransparentColor = System.Drawing.Color.Magenta;
-			this.btnAutoRestart.Name = "btnAutoRestart";
-			this.btnAutoRestart.Size = new System.Drawing.Size(76, 22);
-			this.btnAutoRestart.Text = "Auto Restart";
-			// 
 			// lstDownloads
 			// 
 			this.lstDownloads.AllowColumnReorder = true;
@@ -300,7 +314,7 @@
             listViewItem1});
 			this.lstDownloads.Location = new System.Drawing.Point(0, 25);
 			this.lstDownloads.Name = "lstDownloads";
-			this.lstDownloads.Size = new System.Drawing.Size(457, 239);
+			this.lstDownloads.Size = new System.Drawing.Size(614, 239);
 			this.lstDownloads.TabIndex = 1;
 			this.lstDownloads.UseCompatibleStateImageBehavior = false;
 			this.lstDownloads.View = System.Windows.Forms.View.Details;
@@ -343,16 +357,11 @@
 			this.transferredColumn.Text = "Transferred";
 			this.transferredColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
-			// toolStripSeparator4
-			// 
-			this.toolStripSeparator4.Name = "toolStripSeparator4";
-			this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(457, 264);
+			this.ClientSize = new System.Drawing.Size(614, 264);
 			this.Controls.Add(this.lstDownloads);
 			this.Controls.Add(this.toolStripMenu);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -403,8 +412,9 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
 		private System.Windows.Forms.ColumnHeader sizeColumn;
 		private System.Windows.Forms.ColumnHeader transferredColumn;
-		private System.Windows.Forms.ToolStripButton btnAutoRestart;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+		private BitsMonitor.mToolStripCheckBox tsmiAutoRestart;
+		private BitsMonitor.mToolStripCheckBox tsmiAutoStart;
     }
 }
 
