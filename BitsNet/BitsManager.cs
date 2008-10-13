@@ -221,13 +221,6 @@ namespace BitsNet
         private static IBackgroundCopyManager _bcm = null;
         private static Dictionary<Guid, BitsJob> _jobs;
 
-        private static bool _autostart = true;
-		public static bool AutoStart
-		{
-			get { return _autostart; }
-			set { _autostart = value; }
-		}
-
         static BitsManager()
         {
             _bcm = (IBackgroundCopyManager)new BackgroundCopyManager();
@@ -336,7 +329,7 @@ namespace BitsNet
 		/// <param name="url">url (at the moment source only) where to download file from</param>
 		/// <param name="fileName">name of the file extracted from URL</param>
 		/// <param name="directory">destination directory on local drive</param>
-        public static void AddJob(string url, string fileName, string directory)
+        public static void AddJob(string url, string fileName, string directory, bool autostart)
         {
             if (string.IsNullOrEmpty(url) || string.IsNullOrEmpty(directory))
             {
@@ -350,7 +343,7 @@ namespace BitsNet
             string fullFileName = Path.Combine(directory + Path.DirectorySeparatorChar, fileName);
 			fullFileName = GetNonExistingFileName(fullFileName);
             job.AddFile(url, fullFileName);
-            if (BitsManager._autostart)
+			if ( autostart )
                 job.Resume();
         }
 
