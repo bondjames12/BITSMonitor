@@ -4,6 +4,8 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Web;
 using System.IO;
+using System.Diagnostics;
+using BitsMonitor.Properties;
 
 namespace BitsMonitor
 {
@@ -32,6 +34,7 @@ namespace BitsMonitor
 
         public static void AddJob(string[] args)
         {
+			Debugger.Launch();
             string url = string.Empty;
             string directory = string.Empty;
 
@@ -65,8 +68,9 @@ namespace BitsMonitor
             if ((directory.Length == 2) && (directory[1] == ':'))
                 directory = directory + '\\';
 			string file = HttpUtility.UrlDecode( url.Substring( url.LastIndexOf("/") +1 ) );
-
-			BitsNet.BitsManager.AddJob(url, file, directory);
+			if (file.Contains("?"))
+				file = Utility.GetFileNameFromUrlWithGet(file);
+			BitsNet.BitsManager.AddJob(url, file, directory, Settings.Default.AutoStartBitsJob);
 
         }
 
