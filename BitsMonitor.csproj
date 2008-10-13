@@ -78,11 +78,17 @@
     <Compile Include="MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="mListView.cs">
+    <Compile Include="Controls\mListView.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="mListView.Designer.cs">
+    <Compile Include="Controls\mListView.Designer.cs">
       <DependentUpon>mListView.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\mToolStripCheckBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\mToolStripCheckBox.Designer.cs">
+      <DependentUpon>mToolStripCheckBox.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -98,7 +104,7 @@
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="mListView.resx">
+    <EmbeddedResource Include="Controls\mListView.resx">
       <DependentUpon>mListView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -120,6 +126,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Start.png" />
