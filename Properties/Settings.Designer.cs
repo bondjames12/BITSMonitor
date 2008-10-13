@@ -26,12 +26,12 @@ namespace BitsMonitor.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool AutoRunBitsJob {
+        public bool AutoStartBitsJob {
             get {
-                return ((bool)(this["AutoRunBitsJob"]));
+                return ((bool)(this["AutoStartBitsJob"]));
             }
             set {
-                this["AutoRunBitsJob"] = value;
+                this["AutoStartBitsJob"] = value;
             }
         }
         
