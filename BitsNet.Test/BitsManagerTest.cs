@@ -14,7 +14,7 @@ namespace BitsNet.Test
 		[RowTest]
 		public void AddJob(string url, string jobName, string directory)
 		{
-			BitsManager.AddJob(url, jobName, directory);
+			BitsManager.AddJob(url, jobName, directory, true);
 		}
 	}
 }
