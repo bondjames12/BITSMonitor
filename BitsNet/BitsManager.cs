@@ -222,6 +222,11 @@ namespace BitsNet
         private static Dictionary<Guid, BitsJob> _jobs;
 
         private static bool _autostart = true;
+		public static bool AutoStart
+		{
+			get { return _autostart; }
+			set { _autostart = value; }
+		}
 
         static BitsManager()
         {
@@ -329,9 +334,9 @@ namespace BitsNet
 		/// Adds new job to BITS
 		/// </summary>
 		/// <param name="url">url (at the moment source only) where to download file from</param>
-		/// <param name="jobName">unique name of the job</param>
-		/// <param name="directory"></param>
-        public static void AddJob(string url, string jobName, string directory)
+		/// <param name="fileName">name of the file extracted from URL</param>
+		/// <param name="directory">destination directory on local drive</param>
+        public static void AddJob(string url, string fileName, string directory)
         {
             if (string.IsNullOrEmpty(url) || string.IsNullOrEmpty(directory))
             {
@@ -340,9 +345,9 @@ namespace BitsNet
 
             Guid jobGuid;
             IBackgroundCopyJob job;
-            _bcm.CreateJob(jobName, BG_JOB_TYPE.BG_JOB_TYPE_DOWNLOAD, out jobGuid, out job);
-            string localName = HttpUtility.UrlDecode( url.Substring(url.LastIndexOf("/") + 1) );
-            string fullFileName = Path.Combine(directory + Path.DirectorySeparatorChar, localName);
+            _bcm.CreateJob(fileName, BG_JOB_TYPE.BG_JOB_TYPE_DOWNLOAD, out jobGuid, out job);
+            //string localName = HttpUtility.UrlDecode( url.Substring(url.LastIndexOf("/") + 1) );
+            string fullFileName = Path.Combine(directory + Path.DirectorySeparatorChar, fileName);
 			fullFileName = GetNonExistingFileName(fullFileName);
             job.AddFile(url, fullFileName);
             if (BitsManager._autostart)
