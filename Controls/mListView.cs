@@ -10,6 +10,7 @@ using System.Collections;
 
 namespace BitsMonitor
 {
+	[System.Drawing.ToolboxBitmap(typeof(System.Windows.Forms.ListView))]
 	public partial class mListView : ListView
 	{
 		private SortOrder _actualSortOrder;
