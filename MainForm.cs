@@ -468,6 +468,8 @@ namespace BitsMonitor
 				BitsJob job = GetActiveJob();
 				if (job != null)
 					notifyIcon.ShowBalloonTip(1000, "Download info", String.Format("job: {0} - {1}", job.DisplayName, job.PercentComplete.ToString("P2")), ToolTipIcon.Info);
+				else
+					notifyIcon.ShowBalloonTip(1000, "Download info", "There are no active jobs", ToolTipIcon.Info);
 			}
 		}
 
