@@ -34,7 +34,6 @@ namespace BitsMonitor
 
         public static void AddJob(string[] args)
         {
-			Debugger.Launch();
             string url = string.Empty;
             string directory = string.Empty;
 
