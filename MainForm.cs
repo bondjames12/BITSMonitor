@@ -372,7 +372,7 @@ namespace BitsMonitor
 		{
 			Settings.Default.WindowWidth = this.Width;
 			Settings.Default.WindowHeight = this.Height;
-			if ( ( this.Location.X != -32000 ) && ( this.Location.Y == -32000 ) )
+			if ( ( this.Location.X != -32000 ) && ( this.Location.Y != -32000 ) )
 				Settings.Default.WindowLocation = this.Location;
 			StringBuilder sb = new StringBuilder();
 			char delimiter = ';';
