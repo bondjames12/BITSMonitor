@@ -189,6 +189,7 @@ namespace BitsMonitor
 				BitsJob j = _bitsJobs[g];
 				if (j.JobState == BitsJobState.TRANSFERRED)
 				{
+					notifyIcon.ShowBalloonTip(1000, "Download complete", String.Format("Downloading job: {0} finished", j.DisplayName), ToolTipIcon.Info);
 					BitsManager.CompleteJob(j.Guid);
 				}
 			}
