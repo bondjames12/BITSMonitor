@@ -94,5 +94,17 @@ namespace BitsMonitor.Properties {
                 this["AutoRestartJobs"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ActiveJobs {
+            get {
+                return ((string)(this["ActiveJobs"]));
+            }
+            set {
+                this["ActiveJobs"] = value;
+            }
+        }
     }
 }
