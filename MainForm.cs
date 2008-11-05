@@ -18,6 +18,7 @@ namespace BitsMonitor
     {
 		private Dictionary<Guid, BitsJob> _bitsJobs;
 		private bool _listFilled = false;
+		private ActiveJobs _activeJobs;
 
         public MainForm()
         {
@@ -30,6 +31,8 @@ namespace BitsMonitor
 
 		private void InitializeGUI()
 		{
+			this.cbxActiveJobs.SelectedIndex = 0;
+			this.cbxActiveJobs.SelectedIndexChanged += new EventHandler(cbxActiveJobs_SelectedIndexChanged);
 		}
 
 		private void ResetTimers()
@@ -122,6 +125,8 @@ namespace BitsMonitor
 
 			for (int i = 0; i < lstDownloads.Items.Count; i++)
 			{
+				if (lstDownloads.Items[i] == null)
+					continue;
 				Guid g = (Guid)lstDownloads.Items[i].Tag;
 				BitsJob j = jobs[g];
 				lstDownloads.Items[i].SubItems[2] = new ListViewItem.ListViewSubItem(lstDownloads.Items[i], (j.PercentComplete).ToString("00.00 %", CultureInfo.InvariantCulture)); 
@@ -138,7 +143,49 @@ namespace BitsMonitor
 			}
 			ColourJobs();
 			AutoCompleteJobs();
+			MakeFirstJobsActive();
         }
+
+		private void MakeFirstJobsActive()
+		{
+			if (_activeJobs == ActiveJobs.Manual)
+				return;
+
+			int activeJobsNum = 0;
+			switch (_activeJobs)
+			{
+				case ActiveJobs.One:
+					activeJobsNum = 1;
+					break;
+				case ActiveJobs.Three:
+					activeJobsNum = 3;
+					break;
+				case ActiveJobs.Five:
+					activeJobsNum = 5;
+					break;
+				case ActiveJobs.All:
+					activeJobsNum = lstDownloads.Items.Count;
+					break;
+			}
+
+			int counter = 0;
+			for (int i = 0; i < lstDownloads.Items.Count; i++,counter++)
+			{
+				Guid g = (Guid)lstDownloads.Items[i].Tag;
+				if (! _bitsJobs.ContainsKey(g) )
+					continue;
+				
+				BitsJob j = _bitsJobs[g];
+
+				if ( (counter < activeJobsNum) && ( j.JobState != BitsJobState.TRANSFERRING && j.JobState!= BitsJobState.TRANSFERRED && j.JobState != BitsJobState.CONNECTING && j.JobState != BitsJobState.QUEUED ) )
+					BitsManager.ResumeJob(g);
+				else
+				{
+					if ( ( counter >= activeJobsNum ) && ( j.JobState != BitsJobState.SUSPENDED ) )
+						BitsManager.SuspendJob(g);
+				}
+			}
+		}
 
 		private void ColourJobs()
 		{
@@ -193,6 +240,15 @@ namespace BitsMonitor
 					BitsManager.CompleteJob(j.Guid);
 				}
 			}
+			ShutdownWindows();
+		}
+
+		private void ShutdownWindows()
+		{
+			if (( lstDownloads.Items.Count != 0 ) || ( !cbxShutdown.Checked ) )
+				return;
+
+			WindowsFunc.ExitWindowsEx( (uint)ExitWindows.ShutDown, (uint)ShutdownReason.FlagUserDefined);
 		}
 
 #endregion
@@ -367,6 +423,18 @@ namespace BitsMonitor
 			}
 			this.tsmiAutoRestart.Checked = Settings.Default.AutoRestartJobs;
 			this.tsmiAutoStart.Checked = Settings.Default.AutoStartBitsJob;
+			
+			if (string.IsNullOrEmpty(Settings.Default.ActiveJobs))
+				return;
+			string[] activeJobsNames = Enum.GetNames(typeof(ActiveJobs));
+			for (int i = 0; i < activeJobsNames.Length; i++)
+			{
+				if (activeJobsNames[i] == Settings.Default.ActiveJobs)
+				{
+					this.cbxActiveJobs.SelectedIndex = i;
+					break;
+				}
+			}
 		}
 
 		private void SaveSettings()
@@ -385,6 +453,7 @@ namespace BitsMonitor
 			Settings.Default.ColumnsWidth = sb.ToString();
 			Settings.Default.AutoStartBitsJob = this.tsmiAutoStart.Checked;
 			Settings.Default.AutoRestartJobs = this.tsmiAutoRestart.Checked;
+			Settings.Default.ActiveJobs = cbxActiveJobs.SelectedItem.ToString();
 			Settings.Default.Save();
 		}
 
@@ -478,6 +547,8 @@ namespace BitsMonitor
 		{
 			if (this.WindowState == FormWindowState.Minimized)
 				this.tsmiRestoreMinimize_Click(this, EventArgs.Empty);
+			else
+				this.Activate();
 		}
 
 		private void lstDownloads_KeyDown(object sender, KeyEventArgs e)
@@ -500,7 +571,22 @@ namespace BitsMonitor
 			jobInfo.ShowDialog(this);
 		}
 
+		private void cbxActiveJobs_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			_activeJobs = (ActiveJobs)Enum.Parse( typeof(ActiveJobs) , this.cbxActiveJobs.SelectedItem.ToString());
+		}
+
 	}
+
+	public enum ActiveJobs
+	{
+		Manual,
+		One,
+		Three,
+		Five,
+		All
+	}
+
 }
 
 
