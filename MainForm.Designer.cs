@@ -47,6 +47,7 @@
 			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
 			this.lblActiveJobs = new System.Windows.Forms.ToolStripLabel();
 			this.cbxActiveJobs = new System.Windows.Forms.ToolStripComboBox();
+			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
 			this.cbxShutdown = new BitsMonitor.mToolStripCheckBox();
 			this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.tsmiStart = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,7 +69,6 @@
 			this.UrlColumn = new System.Windows.Forms.ColumnHeader();
 			this.sizeColumn = new System.Windows.Forms.ColumnHeader();
 			this.transferredColumn = new System.Windows.Forms.ColumnHeader();
-			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripMenu.SuspendLayout();
 			this.contextMenu.SuspendLayout();
 			this.applicationContextMenu.SuspendLayout();
@@ -229,14 +229,19 @@
 			this.cbxActiveJobs.Name = "cbxActiveJobs";
 			this.cbxActiveJobs.Size = new System.Drawing.Size(121, 25);
 			// 
+			// toolStripSeparator6
+			// 
+			this.toolStripSeparator6.Name = "toolStripSeparator6";
+			this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+			// 
 			// cbxShutdown
 			// 
 			this.cbxShutdown.BackColor = System.Drawing.Color.Transparent;
 			this.cbxShutdown.Checked = false;
 			this.cbxShutdown.CheckState = System.Windows.Forms.CheckState.Unchecked;
 			this.cbxShutdown.Name = "cbxShutdown";
-			this.cbxShutdown.Size = new System.Drawing.Size(145, 22);
-			this.cbxShutdown.Text = "Shutdown when done:";
+			this.cbxShutdown.Size = new System.Drawing.Size(142, 22);
+			this.cbxShutdown.Text = "Shutdown when done";
 			// 
 			// contextMenu
 			// 
@@ -398,11 +403,6 @@
 			this.transferredColumn.DisplayIndex = 5;
 			this.transferredColumn.Text = "Transferred";
 			this.transferredColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-			// 
-			// toolStripSeparator6
-			// 
-			this.toolStripSeparator6.Name = "toolStripSeparator6";
-			this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
 			// 
 			// MainForm
 			// 
