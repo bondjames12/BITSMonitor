@@ -30,7 +30,7 @@
         {
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-			System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
+			System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
 			this.toolStripMenu = new System.Windows.Forms.ToolStrip();
 			this.tsbAddJob = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -44,6 +44,10 @@
 			this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
 			this.tsmiAutoRestart = new BitsMonitor.mToolStripCheckBox();
 			this.tsmiAutoStart = new BitsMonitor.mToolStripCheckBox();
+			this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+			this.lblActiveJobs = new System.Windows.Forms.ToolStripLabel();
+			this.cbxActiveJobs = new System.Windows.Forms.ToolStripComboBox();
+			this.cbxShutdown = new BitsMonitor.mToolStripCheckBox();
 			this.contextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.tsmiStart = new System.Windows.Forms.ToolStripMenuItem();
 			this.tsmiPause = new System.Windows.Forms.ToolStripMenuItem();
@@ -64,6 +68,7 @@
 			this.UrlColumn = new System.Windows.Forms.ColumnHeader();
 			this.sizeColumn = new System.Windows.Forms.ColumnHeader();
 			this.transferredColumn = new System.Windows.Forms.ColumnHeader();
+			this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
 			this.toolStripMenu.SuspendLayout();
 			this.contextMenu.SuspendLayout();
 			this.applicationContextMenu.SuspendLayout();
@@ -83,10 +88,15 @@
             this.btnAbout,
             this.toolStripSeparator4,
             this.tsmiAutoRestart,
-            this.tsmiAutoStart});
+            this.tsmiAutoStart,
+            this.toolStripSeparator5,
+            this.lblActiveJobs,
+            this.cbxActiveJobs,
+            this.toolStripSeparator6,
+            this.cbxShutdown});
 			this.toolStripMenu.Location = new System.Drawing.Point(0, 0);
 			this.toolStripMenu.Name = "toolStripMenu";
-			this.toolStripMenu.Size = new System.Drawing.Size(614, 25);
+			this.toolStripMenu.Size = new System.Drawing.Size(747, 25);
 			this.toolStripMenu.TabIndex = 0;
 			this.toolStripMenu.Text = "toolStrip1";
 			// 
@@ -195,6 +205,38 @@
 			this.tsmiAutoStart.Name = "tsmiAutoStart";
 			this.tsmiAutoStart.Size = new System.Drawing.Size(76, 22);
 			this.tsmiAutoStart.Text = "AutoStart";
+			// 
+			// toolStripSeparator5
+			// 
+			this.toolStripSeparator5.Name = "toolStripSeparator5";
+			this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+			// 
+			// lblActiveJobs
+			// 
+			this.lblActiveJobs.Name = "lblActiveJobs";
+			this.lblActiveJobs.Size = new System.Drawing.Size(69, 22);
+			this.lblActiveJobs.Text = "Active Jobs:";
+			// 
+			// cbxActiveJobs
+			// 
+			this.cbxActiveJobs.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cbxActiveJobs.Items.AddRange(new object[] {
+            "Manual",
+            "One",
+            "Three",
+            "Five",
+            "All"});
+			this.cbxActiveJobs.Name = "cbxActiveJobs";
+			this.cbxActiveJobs.Size = new System.Drawing.Size(121, 25);
+			// 
+			// cbxShutdown
+			// 
+			this.cbxShutdown.BackColor = System.Drawing.Color.Transparent;
+			this.cbxShutdown.Checked = false;
+			this.cbxShutdown.CheckState = System.Windows.Forms.CheckState.Unchecked;
+			this.cbxShutdown.Name = "cbxShutdown";
+			this.cbxShutdown.Size = new System.Drawing.Size(145, 22);
+			this.cbxShutdown.Text = "Shutdown when done:";
 			// 
 			// contextMenu
 			// 
@@ -308,13 +350,13 @@
 			this.lstDownloads.FullRowSelect = true;
 			this.lstDownloads.GridLines = true;
 			this.lstDownloads.HideSelection = false;
-			listViewItem1.Checked = true;
-			listViewItem1.StateImageIndex = 1;
+			listViewItem2.Checked = true;
+			listViewItem2.StateImageIndex = 1;
 			this.lstDownloads.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem1});
+            listViewItem2});
 			this.lstDownloads.Location = new System.Drawing.Point(0, 25);
 			this.lstDownloads.Name = "lstDownloads";
-			this.lstDownloads.Size = new System.Drawing.Size(614, 239);
+			this.lstDownloads.Size = new System.Drawing.Size(747, 239);
 			this.lstDownloads.TabIndex = 1;
 			this.lstDownloads.UseCompatibleStateImageBehavior = false;
 			this.lstDownloads.View = System.Windows.Forms.View.Details;
@@ -357,11 +399,16 @@
 			this.transferredColumn.Text = "Transferred";
 			this.transferredColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
+			// toolStripSeparator6
+			// 
+			this.toolStripSeparator6.Name = "toolStripSeparator6";
+			this.toolStripSeparator6.Size = new System.Drawing.Size(6, 25);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(614, 264);
+			this.ClientSize = new System.Drawing.Size(747, 264);
 			this.Controls.Add(this.lstDownloads);
 			this.Controls.Add(this.toolStripMenu);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -415,6 +462,11 @@
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
 		private BitsMonitor.mToolStripCheckBox tsmiAutoRestart;
 		private BitsMonitor.mToolStripCheckBox tsmiAutoStart;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+		private System.Windows.Forms.ToolStripLabel lblActiveJobs;
+		private System.Windows.Forms.ToolStripComboBox cbxActiveJobs;
+		private mToolStripCheckBox cbxShutdown;
+		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
     }
 }
 
