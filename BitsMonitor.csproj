@@ -66,6 +66,7 @@
     <Compile Include="AddJob.Designer.cs">
       <DependentUpon>AddJob.cs</DependentUpon>
     </Compile>
+    <Compile Include="ExitWindows.cs" />
     <Compile Include="JobInfo.cs">
       <SubType>Form</SubType>
     </Compile>
