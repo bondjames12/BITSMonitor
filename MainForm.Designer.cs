@@ -30,7 +30,7 @@
         {
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-			System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
+			System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("");
 			this.toolStripMenu = new System.Windows.Forms.ToolStrip();
 			this.tsbAddJob = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -69,9 +69,12 @@
 			this.UrlColumn = new System.Windows.Forms.ColumnHeader();
 			this.sizeColumn = new System.Windows.Forms.ColumnHeader();
 			this.transferredColumn = new System.Windows.Forms.ColumnHeader();
+			this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+			this.tsslActiveAllDownloads = new System.Windows.Forms.ToolStripStatusLabel();
 			this.toolStripMenu.SuspendLayout();
 			this.contextMenu.SuspendLayout();
 			this.applicationContextMenu.SuspendLayout();
+			this.statusStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// toolStripMenu
@@ -355,13 +358,13 @@
 			this.lstDownloads.FullRowSelect = true;
 			this.lstDownloads.GridLines = true;
 			this.lstDownloads.HideSelection = false;
-			listViewItem2.Checked = true;
-			listViewItem2.StateImageIndex = 1;
+			listViewItem1.Checked = true;
+			listViewItem1.StateImageIndex = 1;
 			this.lstDownloads.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem2});
+            listViewItem1});
 			this.lstDownloads.Location = new System.Drawing.Point(0, 25);
 			this.lstDownloads.Name = "lstDownloads";
-			this.lstDownloads.Size = new System.Drawing.Size(747, 239);
+			this.lstDownloads.Size = new System.Drawing.Size(747, 217);
 			this.lstDownloads.TabIndex = 1;
 			this.lstDownloads.UseCompatibleStateImageBehavior = false;
 			this.lstDownloads.View = System.Windows.Forms.View.Details;
@@ -404,6 +407,22 @@
 			this.transferredColumn.Text = "Transferred";
 			this.transferredColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
 			// 
+			// statusStrip1
+			// 
+			this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tsslActiveAllDownloads});
+			this.statusStrip1.Location = new System.Drawing.Point(0, 242);
+			this.statusStrip1.Name = "statusStrip1";
+			this.statusStrip1.Size = new System.Drawing.Size(747, 22);
+			this.statusStrip1.TabIndex = 2;
+			this.statusStrip1.Text = "statusStrip1";
+			// 
+			// tsslActiveAllDownloads
+			// 
+			this.tsslActiveAllDownloads.Name = "tsslActiveAllDownloads";
+			this.tsslActiveAllDownloads.Size = new System.Drawing.Size(116, 17);
+			this.tsslActiveAllDownloads.Text = "active/all downloads";
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -411,6 +430,7 @@
 			this.ClientSize = new System.Drawing.Size(747, 264);
 			this.Controls.Add(this.lstDownloads);
 			this.Controls.Add(this.toolStripMenu);
+			this.Controls.Add(this.statusStrip1);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.Name = "MainForm";
 			this.Text = "Bits Monitor";
@@ -421,6 +441,8 @@
 			this.toolStripMenu.PerformLayout();
 			this.contextMenu.ResumeLayout(false);
 			this.applicationContextMenu.ResumeLayout(false);
+			this.statusStrip1.ResumeLayout(false);
+			this.statusStrip1.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -467,6 +489,8 @@
 		private System.Windows.Forms.ToolStripComboBox cbxActiveJobs;
 		private mToolStripCheckBox cbxShutdown;
 		private System.Windows.Forms.ToolStripSeparator toolStripSeparator6;
+		private System.Windows.Forms.StatusStrip statusStrip1;
+		private System.Windows.Forms.ToolStripStatusLabel tsslActiveAllDownloads;
     }
 }
 
