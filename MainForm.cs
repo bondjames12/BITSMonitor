@@ -144,7 +144,21 @@ namespace BitsMonitor
 			ColourJobs();
 			AutoCompleteJobs();
 			MakeFirstJobsActive();
+			UpdateStatusInfo();
         }
+
+		private void UpdateStatusInfo()
+		{
+			
+			int active = 0;
+			for (int i = 0; i < lstDownloads.Items.Count; i++)
+			{
+				Guid g = (Guid)lstDownloads.Items[i].Tag;
+				if ( _bitsJobs[g].JobState == BitsJobState.TRANSFERRING || _bitsJobs[g].JobState == BitsJobState.QUEUED )
+					active++;
+			}
+			this.tsslActiveAllDownloads.Text = String.Format("active: {0} all: {1}", active, _bitsJobs.Count);
+		}
 
 		private void MakeFirstJobsActive()
 		{
