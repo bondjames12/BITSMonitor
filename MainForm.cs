@@ -574,6 +574,20 @@ namespace BitsMonitor
 					lstDownloads.Items[i].Selected = true;
 				}
 			}
+			else
+			{
+				switch (e.KeyCode)
+				{
+					case Keys.Delete:
+						if (tsbCancel.Enabled)
+							btnCancel_Click(this, EventArgs.Empty);
+						break;
+					case Keys.Space:
+						if (tsbSuspend.Enabled)
+							btnSuspend_Click(this, EventArgs.Empty);
+						break;
+				}
+			}
 		}
 
 		private void lstDownloads_MouseDoubleClick(object sender, MouseEventArgs e)
