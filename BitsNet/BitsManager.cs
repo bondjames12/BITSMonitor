@@ -357,8 +357,17 @@ namespace BitsNet
 		{
 			string newFileName = filename;
 			uint i = 0;
-			string extension = filename.Substring(filename.LastIndexOf(".")+1);
-			string noextFilename = filename.Substring(0, filename.LastIndexOf("."));
+			string extension = string.Empty;
+			string noextFilename = string.Empty;
+			if ( filename.LastIndexOf(".") != -1 )
+			{
+				extension = filename.Substring(filename.LastIndexOf(".") + 1);
+				noextFilename = filename.Substring(0, filename.LastIndexOf("."));
+			}
+			else
+			{
+				noextFilename = filename;
+			}
 			while (File.Exists(newFileName))
 			{
 				newFileName = string.Format("{0}-({1}).{2}", noextFilename, i++, extension);
