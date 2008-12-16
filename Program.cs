@@ -6,6 +6,7 @@ using System.Web;
 using System.IO;
 using System.Diagnostics;
 using BitsMonitor.Properties;
+using System.Net;
 
 namespace BitsMonitor
 {
@@ -32,10 +33,15 @@ namespace BitsMonitor
             }
         }
 
-        public static void AddJob(string[] args)
+		/// <summary>
+		/// Adds job to BITS using command line parameters:
+		/// </summary>
+		/// <param name="args"></param>
+		public static void AddJob(string[] args)
         {
-            string url = string.Empty;
+			string url = string.Empty;
             string directory = string.Empty;
+			string cookie = string.Empty;
 
             if (args.Length < 4)
                 Environment.Exit(1);
@@ -44,7 +50,7 @@ namespace BitsMonitor
             {
                 if (args[i].Contains("--url:"))
                 {
-                    url = args[i++ + 1];
+                    url = args[i + 1];
                     continue;
                 }
                 if (args[i].Contains("--dir:"))
@@ -58,7 +64,7 @@ namespace BitsMonitor
             {
                 Environment.Exit(1);
             }
-			if (url.StartsWith("ftp"))
+			if (url.ToLower().StartsWith("ftp"))
 			{
 				MessageBox.Show("FTP is not supported by BITS!");
 				Environment.Exit(2);
@@ -66,11 +72,17 @@ namespace BitsMonitor
 
             if ((directory.Length == 2) && (directory[1] == ':'))
                 directory = directory + '\\';
-			string file = HttpUtility.UrlDecode( url.Substring( url.LastIndexOf("/") +1 ) );
-			if (file.Contains("?"))
-				file = Utility.GetFileNameFromUrlWithGet(file);
-			BitsNet.BitsManager.AddJob(url, file, directory, Settings.Default.AutoStartBitsJob);
-
+			string filename = HttpUtility.UrlDecode( url.Substring( url.LastIndexOf("/") +1 ) );
+			if (filename.Contains("?"))
+			{
+				filename = Utility.TryExtractFilename(filename);
+				if (filename == string.Empty)
+				{
+					MessageBox.Show("Unable to retrieve file name!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+					Environment.Exit(2);
+				}
+			}
+			BitsNet.BitsManager.AddJob(url, filename, directory, Settings.Default.AutoStartBitsJob);
         }
 
 

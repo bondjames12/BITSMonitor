@@ -8,7 +8,7 @@ namespace BitsMonitor
 {
 	class Utility
 	{
-		public static string GetFileNameFromUrlWithGet(string fileName)
+		public static string TryExtractFilename(string fileName)
 		{
 			fileName = fileName.Substring(fileName.IndexOf("?"), fileName.Length - fileName.IndexOf("?"));
 			Regex exp = new Regex(@"\?.*=");
@@ -20,7 +20,7 @@ namespace BitsMonitor
 					fileName = fileName.Remove(mc[i].Index, mc[i].Length);
 				}
 			}
-			return "";
+			return string.Empty;
 		}
 
 	}
