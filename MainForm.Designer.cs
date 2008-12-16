@@ -30,7 +30,6 @@
         {
 			this.components = new System.ComponentModel.Container();
 			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-			System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("");
 			this.toolStripMenu = new System.Windows.Forms.ToolStrip();
 			this.tsbAddJob = new System.Windows.Forms.ToolStripButton();
 			this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -358,10 +357,6 @@
 			this.lstDownloads.FullRowSelect = true;
 			this.lstDownloads.GridLines = true;
 			this.lstDownloads.HideSelection = false;
-			listViewItem2.Checked = true;
-			listViewItem2.StateImageIndex = 1;
-			this.lstDownloads.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem2});
 			this.lstDownloads.Location = new System.Drawing.Point(0, 25);
 			this.lstDownloads.Name = "lstDownloads";
 			this.lstDownloads.Size = new System.Drawing.Size(747, 217);
@@ -454,7 +449,6 @@
         private System.Windows.Forms.ToolStripButton tsbStart;
         private System.Windows.Forms.ToolStripButton tsbSuspend;
         private System.Windows.Forms.ToolStripButton tsbCancel;
-        //private System.Windows.Forms.ListView lstDownloads;
 		private mListView lstDownloads;
         private System.Windows.Forms.ColumnHeader FileNameColumn;
         private System.Windows.Forms.ColumnHeader JobColumn;
