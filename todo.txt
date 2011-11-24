@@ -1,8 +1,0 @@
-﻿Todo:
-
-
-History of Changes:
-1. Autocompletion (after file is being downloaded) [done]
-	1a. Baloon tooltip with information that file was downloaded. [done]
-2. Auto resume jobs in 'TRANSIENT_ERROR' state (if no other jobs are active) [done]
-3. checkbox control for toolstrip menu [done - 13/10/2008]
