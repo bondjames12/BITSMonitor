@@ -32,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="NLog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Packages\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -61,6 +65,12 @@
     </Compile>
     <Compile Include="AddJob.Designer.cs">
       <DependentUpon>AddJob.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ExceptionInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ExceptionInfo.Designer.cs">
+      <DependentUpon>ExceptionInfo.cs</DependentUpon>
     </Compile>
     <Compile Include="ExitWindows.cs" />
     <Compile Include="JobInfo.cs">
@@ -94,6 +104,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="AddJob.resx">
       <DependentUpon>AddJob.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ExceptionInfo.resx">
+      <DependentUpon>ExceptionInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="JobInfo.resx">
       <DependentUpon>JobInfo.cs</DependentUpon>
@@ -139,6 +152,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\complete.png" />
   </ItemGroup>
   <ItemGroup>
