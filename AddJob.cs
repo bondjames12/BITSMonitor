@@ -8,6 +8,9 @@ using System.Text;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.IO;
+using System.Security.Permissions;
+using System.Security;
+using BitsMonitor.Properties;
 
 namespace BitsMonitor
 {
@@ -37,6 +40,12 @@ namespace BitsMonitor
 			get { return this.cbxAutoRun.Checked; }
 			set { this.cbxAutoRun.Checked = value; }
 		}
+
+		private string recentlyUsedFolder;
+		public string RecentlyUsedFolder
+		{
+			set { this.recentlyUsedFolder = value; }
+		}
         
         public AddJob()
         {
@@ -46,6 +55,11 @@ namespace BitsMonitor
 
         private void InitializeEx()
         {
+			string mruDirectory = Settings.Default.MRUFolder;
+			if (!string.IsNullOrEmpty(mruDirectory) && (System.IO.Directory.Exists(mruDirectory)))
+				this.txtSaveIn.Text = mruDirectory;
+			else
+				Settings.Default.MRUFolder = string.Empty;
             if (!Clipboard.ContainsText( TextDataFormat.Text | TextDataFormat.UnicodeText ))
                 return;
             this.txtUrl.Text = Clipboard.GetText(TextDataFormat.Text | TextDataFormat.UnicodeText);
@@ -69,7 +83,12 @@ namespace BitsMonitor
             {
                 if (!IsUrlOK())
                     this.err.SetError(this.txtUrl, "not proper web/ftp address");
+
+				FileIOPermission writePermission = new FileIOPermission(FileIOPermissionAccess.Write, this.txtSaveIn.Text);
+				if (!SecurityManager.IsGranted(writePermission))
+					this.err.SetError(this.txtSaveIn, "no write permission");
             }
+			Settings.Default.MRUFolder = this.txtSaveIn.Text;
 			this.DialogResult = DialogResult.OK;
 			this.Close();
         }
