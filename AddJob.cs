@@ -30,22 +30,22 @@ namespace BitsMonitor
             get { return this.txtUrl.Text; }
         }
 
-		public string Directory
-		{
-			get { return this.txtSaveIn.Text; }
-		}
+        public string Directory
+        {
+            get { return this.txtSaveIn.Text; }
+        }
 
-		public bool AutoStartJob
-		{
-			get { return this.cbxAutoRun.Checked; }
-			set { this.cbxAutoRun.Checked = value; }
-		}
+        public bool AutoStartJob
+        {
+            get { return this.cbxAutoRun.Checked; }
+            set { this.cbxAutoRun.Checked = value; }
+        }
 
-		private string recentlyUsedFolder;
-		public string RecentlyUsedFolder
-		{
-			set { this.recentlyUsedFolder = value; }
-		}
+        private string recentlyUsedFolder;
+        public string RecentlyUsedFolder
+        {
+            set { this.recentlyUsedFolder = value; }
+        }
         
         public AddJob()
         {
@@ -55,11 +55,11 @@ namespace BitsMonitor
 
         private void InitializeEx()
         {
-			string mruDirectory = Settings.Default.MRUFolder;
-			if (!string.IsNullOrEmpty(mruDirectory) && (System.IO.Directory.Exists(mruDirectory)))
-				this.txtSaveIn.Text = mruDirectory;
-			else
-				Settings.Default.MRUFolder = string.Empty;
+            string mruDirectory = Settings.Default.MRUFolder;
+            if (!string.IsNullOrEmpty(mruDirectory) && (System.IO.Directory.Exists(mruDirectory)))
+                this.txtSaveIn.Text = mruDirectory;
+            else
+                Settings.Default.MRUFolder = string.Empty;
             if (!Clipboard.ContainsText( TextDataFormat.Text | TextDataFormat.UnicodeText ))
                 return;
             this.txtUrl.Text = Clipboard.GetText(TextDataFormat.Text | TextDataFormat.UnicodeText);
@@ -76,40 +76,40 @@ namespace BitsMonitor
                     this.err.SetError(this.txtUrl, "no url specified");
                 if (string.IsNullOrEmpty(this.txtJobName.Text))
                     this.err.SetError(this.txtJobName, "no job name specified");
-				if (string.IsNullOrEmpty(this.txtSaveIn.Text))
-					this.err.SetError(this.txtSaveIn, "no destination folder specified");
+                if (string.IsNullOrEmpty(this.txtSaveIn.Text))
+                    this.err.SetError(this.txtSaveIn, "no destination folder specified");
             }
             else
             {
-				if (!IsUrlOK())
-				{
-					this.err.SetError(this.txtUrl, "not proper web/ftp address");
-					return;
-				}
+                if (!IsUrlOK())
+                {
+                    this.err.SetError(this.txtUrl, "not proper web/ftp address");
+                    return;
+                }
 
-            	bool permission = true;
-				FileInfo file = new FileInfo(Path.Combine(this.txtSaveIn.Text, this.txtJobName.Text));
-            	try
-            	{
-					using (Stream stream = file.OpenWrite())
-					{
-						stream.Close();
-						file.Delete();
-					}
-            	}
-            	catch
-            	{
-            		permission = false;
-            	}
-				if (permission == false)
-				{
-					this.err.SetError(this.txtSaveIn, "no write permission");
-					return;
-				}
+                bool permission = true;
+                FileInfo file = new FileInfo(Path.Combine(this.txtSaveIn.Text, this.txtJobName.Text));
+                try
+                {
+                    using (Stream stream = file.OpenWrite())
+                    {
+                        stream.Close();
+                        file.Delete();
+                    }
+                }
+                catch
+                {
+                    permission = false;
+                }
+                if (permission == false)
+                {
+                    this.err.SetError(this.txtSaveIn, "no write permission");
+                    return;
+                }
             }
-			Settings.Default.MRUFolder = this.txtSaveIn.Text;
-			this.DialogResult = DialogResult.OK;
-			this.Close();
+            Settings.Default.MRUFolder = this.txtSaveIn.Text;
+            this.DialogResult = DialogResult.OK;
+            this.Close();
         }
 
         /// <summary>
@@ -123,37 +123,37 @@ namespace BitsMonitor
             return _regex.IsMatch(this.txtUrl.Text);
         }
 
-		/// <summary>
-		/// Browse for destination folder (folder where downloaded file will be stored)
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		private void btnBrowse_Click(object sender, EventArgs e)
-		{
-			FolderBrowserDialog folderBrowse = new FolderBrowserDialog();
-			folderBrowse.ShowNewFolderButton = true;
-			folderBrowse.Description = "Please choose destination folder for storing downloaded file";
-			if (folderBrowse.ShowDialog() == DialogResult.OK)
-			{
-				this.txtSaveIn.Text = folderBrowse.SelectedPath;
-			}
-		}
+        /// <summary>
+        /// Browse for destination folder (folder where downloaded file will be stored)
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void btnBrowse_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folderBrowse = new FolderBrowserDialog();
+            folderBrowse.ShowNewFolderButton = true;
+            folderBrowse.Description = "Please choose destination folder for storing downloaded file";
+            if (folderBrowse.ShowDialog() == DialogResult.OK)
+            {
+                this.txtSaveIn.Text = folderBrowse.SelectedPath;
+            }
+        }
 
-		private void btnCancel_Click(object sender, EventArgs e)
-		{
-			this.DialogResult = DialogResult.Cancel;
-			this.Close();
-		}
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            this.DialogResult = DialogResult.Cancel;
+            this.Close();
+        }
 
-		private void txtUrl_TextChanged(object sender, EventArgs e)
-		{
-			if (string.IsNullOrEmpty((this.txtUrl.Text)))
-				return;
-			int index = this.txtUrl.Text.LastIndexOf('/');
-			if (index < 0)
-				return;
-			string newJobName = this.txtUrl.Text.Substring(index + 1);
-			this.txtJobName.Text = newJobName;
-		}
+        private void txtUrl_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty((this.txtUrl.Text)))
+                return;
+            int index = this.txtUrl.Text.LastIndexOf('/');
+            if (index < 0)
+                return;
+            string newJobName = this.txtUrl.Text.Substring(index + 1);
+            this.txtJobName.Text = newJobName;
+        }
     }
 }
