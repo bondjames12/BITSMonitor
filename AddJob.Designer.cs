@@ -75,6 +75,7 @@
 			this.txtUrl.Name = "txtUrl";
 			this.txtUrl.Size = new System.Drawing.Size(201, 20);
 			this.txtUrl.TabIndex = 1;
+			this.txtUrl.TextChanged += new System.EventHandler(this.txtUrl_TextChanged);
 			// 
 			// txtJobName
 			// 

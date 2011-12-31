@@ -144,5 +144,16 @@ namespace BitsMonitor
 			this.DialogResult = DialogResult.Cancel;
 			this.Close();
 		}
+
+		private void txtUrl_TextChanged(object sender, EventArgs e)
+		{
+			if (string.IsNullOrEmpty((this.txtSaveIn.Text)))
+				return;
+			int index = this.txtUrl.Text.LastIndexOf('/');
+			if (index < 0)
+				return;
+			string newJobName = this.txtUrl.Text.Substring(index + 1);
+			this.txtJobName.Text = newJobName;
+		}
     }
 }
