@@ -147,7 +147,7 @@ namespace BitsMonitor
 
 		private void txtUrl_TextChanged(object sender, EventArgs e)
 		{
-			if (string.IsNullOrEmpty((this.txtSaveIn.Text)))
+			if (string.IsNullOrEmpty((this.txtUrl.Text)))
 				return;
 			int index = this.txtUrl.Text.LastIndexOf('/');
 			if (index < 0)
