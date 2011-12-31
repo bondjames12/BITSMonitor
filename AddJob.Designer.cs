@@ -50,7 +50,7 @@
 			this.btnOK.Location = new System.Drawing.Point(217, 118);
 			this.btnOK.Name = "btnOK";
 			this.btnOK.Size = new System.Drawing.Size(60, 23);
-			this.btnOK.TabIndex = 6;
+			this.btnOK.TabIndex = 9;
 			this.btnOK.Text = "OK";
 			this.btnOK.UseVisualStyleBackColor = true;
 			this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -62,7 +62,7 @@
 			this.btnCancel.Location = new System.Drawing.Point(151, 118);
 			this.btnCancel.Name = "btnCancel";
 			this.btnCancel.Size = new System.Drawing.Size(60, 23);
-			this.btnCancel.TabIndex = 5;
+			this.btnCancel.TabIndex = 8;
 			this.btnCancel.Text = "Cancel";
 			this.btnCancel.UseVisualStyleBackColor = true;
 			this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
@@ -114,7 +114,7 @@
 			this.cbxAutoRun.Location = new System.Drawing.Point(76, 95);
 			this.cbxAutoRun.Name = "cbxAutoRun";
 			this.cbxAutoRun.Size = new System.Drawing.Size(112, 17);
-			this.cbxAutoRun.TabIndex = 4;
+			this.cbxAutoRun.TabIndex = 7;
 			this.cbxAutoRun.Text = "Autorun download";
 			this.cbxAutoRun.UseVisualStyleBackColor = true;
 			// 
@@ -125,7 +125,7 @@
 			this.txtSaveIn.Location = new System.Drawing.Point(76, 64);
 			this.txtSaveIn.Name = "txtSaveIn";
 			this.txtSaveIn.Size = new System.Drawing.Size(135, 20);
-			this.txtSaveIn.TabIndex = 7;
+			this.txtSaveIn.TabIndex = 5;
 			// 
 			// lblSaveIn
 			// 
@@ -133,7 +133,7 @@
 			this.lblSaveIn.Location = new System.Drawing.Point(9, 68);
 			this.lblSaveIn.Name = "lblSaveIn";
 			this.lblSaveIn.Size = new System.Drawing.Size(46, 13);
-			this.lblSaveIn.TabIndex = 8;
+			this.lblSaveIn.TabIndex = 4;
 			this.lblSaveIn.Text = "Save in:";
 			// 
 			// btnBrowse
@@ -142,7 +142,7 @@
 			this.btnBrowse.Location = new System.Drawing.Point(217, 63);
 			this.btnBrowse.Name = "btnBrowse";
 			this.btnBrowse.Size = new System.Drawing.Size(60, 23);
-			this.btnBrowse.TabIndex = 9;
+			this.btnBrowse.TabIndex = 6;
 			this.btnBrowse.Text = "Browse";
 			this.btnBrowse.UseVisualStyleBackColor = true;
 			this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
