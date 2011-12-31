@@ -18,7 +18,7 @@ namespace BitsMonitor
     {
         private Regex _regex;
         // simple pattern for checking if text is similar to proper ftp/http address
-        private string urlPattern = @"^http://.+$";
+        private string urlPattern = @"^https?://.+$";
 
         public string JobName
         {
@@ -81,12 +81,31 @@ namespace BitsMonitor
             }
             else
             {
-                if (!IsUrlOK())
-                    this.err.SetError(this.txtUrl, "not proper web/ftp address");
+				if (!IsUrlOK())
+				{
+					this.err.SetError(this.txtUrl, "not proper web/ftp address");
+					return;
+				}
 
-				FileIOPermission writePermission = new FileIOPermission(FileIOPermissionAccess.Write, this.txtSaveIn.Text);
-				if (!SecurityManager.IsGranted(writePermission))
+            	bool permission = true;
+				FileInfo file = new FileInfo(Path.Combine(this.txtSaveIn.Text, this.txtJobName.Text));
+            	try
+            	{
+					using (Stream stream = file.OpenWrite())
+					{
+						stream.Close();
+						file.Delete();
+					}
+            	}
+            	catch
+            	{
+            		permission = false;
+            	}
+				if (permission == false)
+				{
 					this.err.SetError(this.txtSaveIn, "no write permission");
+					return;
+				}
             }
 			Settings.Default.MRUFolder = this.txtSaveIn.Text;
 			this.DialogResult = DialogResult.OK;
