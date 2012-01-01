@@ -14,7 +14,7 @@ namespace BitsNet
         CANCEL_JOB,
         RESUME_JOB,
         COMPLETE_JOB,
-		SUSPEND_JOB
+        SUSPEND_JOB
     }
 
     public enum BitsJobState
@@ -31,14 +31,14 @@ namespace BitsNet
     }
 
     public class BitsJob
-	{
-		#region Properties
-		private IBackgroundCopyJob _job;
+    {
+        #region Properties
+        private IBackgroundCopyJob _job;
 
         private string _fileName = string.Empty;
-		/// <summary>
-		/// name of the file the content of the job will be written to (choosen automatically, or by the user in AddJob dialog)
-		/// </summary>
+        /// <summary>
+        /// name of the file the content of the job will be written to (choosen automatically, or by the user in AddJob dialog)
+        /// </summary>
         public string FileName
         {
             get { return _fileName; }
@@ -46,9 +46,9 @@ namespace BitsNet
         }
 
         private string _url = string.Empty;
-		/// <summary>
-		/// Url the file is being uploaded/downloaded to/from
-		/// </summary>
+        /// <summary>
+        /// Url the file is being uploaded/downloaded to/from
+        /// </summary>
         public string Url
         {
             get { return _url; }
@@ -56,9 +56,9 @@ namespace BitsNet
         }
 
         private string _displayName = string.Empty;
-		/// <summary>
-		/// display name of the job
-		/// </summary>
+        /// <summary>
+        /// display name of the job
+        /// </summary>
         public string DisplayName
         {
             get { return _displayName; }
@@ -67,9 +67,9 @@ namespace BitsNet
 
 
         private string _description = string.Empty;
-		/// <summary>
-		/// Description of the job
-		/// </summary>
+        /// <summary>
+        /// Description of the job
+        /// </summary>
         public string Description
         {
             protected get { return _description; }
@@ -77,19 +77,19 @@ namespace BitsNet
         }
         
         private ulong _bytesTotal = 0;
-		/// <summary>
-		/// return the overall size of the transmitted file
-		/// </summary>
+        /// <summary>
+        /// return the overall size of the transmitted file
+        /// </summary>
         public ulong BytesTotal
         {
             protected set { _bytesTotal = value; }
             get { return _bytesTotal; }
         }
 
-		private ulong _bytesTransferred = 0;
-		/// <summary>
-		/// returns the amount of bytes already transferred
-		/// </summary>
+        private ulong _bytesTransferred = 0;
+        /// <summary>
+        /// returns the amount of bytes already transferred
+        /// </summary>
         public ulong BytesTransferred
         {
             protected set { _bytesTransferred = value; }
@@ -97,23 +97,23 @@ namespace BitsNet
         }
 
         private float _percentComplete = 0.0f; 
-		/// <summary>
-		/// Calculates and returns percentage of the completion of the job
-		/// calculation is based on TotalBytes and BytesTransferred
-		/// </summary>
+        /// <summary>
+        /// Calculates and returns percentage of the completion of the job
+        /// calculation is based on TotalBytes and BytesTransferred
+        /// </summary>
         public float PercentComplete
         {
             protected set { _percentComplete = value; }
             get 
             {
-				return _bytesTransferred * 1.0f / _bytesTotal;// *100.0f;
+                return _bytesTransferred * 1.0f / _bytesTotal;// *100.0f;
             }
         }
 
         private BitsJobState _jobState;
-		/// <summary>
-		/// State of the job
-		/// </summary>
+        /// <summary>
+        /// State of the job
+        /// </summary>
         public BitsJobState JobState
         {
             protected set { _jobState = value; }
@@ -121,9 +121,9 @@ namespace BitsNet
         }
 
         private string _jobStateDescription = string.Empty;
-		/// <summary>
-		/// Text description of the state of the job.
-		/// </summary>
+        /// <summary>
+        /// Text description of the state of the job.
+        /// </summary>
         public string JobStateDescription
         {
             get {   return _jobStateDescription; }
@@ -136,24 +136,24 @@ namespace BitsNet
                 _jobStateDescription = value.Substring(13);
                 _jobState = (BitsJobState)Enum.Parse( _jobState.GetType(), _jobStateDescription);
             }
-		}
+        }
 
-		private Guid _jobGuid;
-		/// <summary>
-		/// return Guid of the job
-		/// </summary>
-		public Guid Guid
-		{
-			get
-			{
-				if ( (_jobGuid == null) || ( _jobGuid == Guid.Empty ) )
-					_job.GetId(out _jobGuid);
-				return _jobGuid;
-			}
-		}
-		#endregion
+        private Guid _jobGuid;
+        /// <summary>
+        /// return Guid of the job
+        /// </summary>
+        public Guid Guid
+        {
+            get
+            {
+                if ( (_jobGuid == null) || ( _jobGuid == Guid.Empty ) )
+                    _job.GetId(out _jobGuid);
+                return _jobGuid;
+            }
+        }
+        #endregion
 
-		internal BitsJob(IBackgroundCopyJob job)
+        internal BitsJob(IBackgroundCopyJob job)
         {
             _job = job;
 
@@ -205,10 +205,10 @@ namespace BitsNet
             _job.Cancel();
         }
 
-		internal void SuspendJob()
-		{
-			_job.Suspend();
-		}
+        internal void SuspendJob()
+        {
+            _job.Suspend();
+        }
 
     }
 
@@ -227,14 +227,14 @@ namespace BitsNet
             _jobs = new Dictionary<Guid, BitsJob>();
         }
 
-		public static Dictionary<Guid,BitsJob> GetAllJobs()
+        public static Dictionary<Guid,BitsJob> GetAllJobs()
         {
             uint dwFlags = 0; // 0 - to get all jobs
             IEnumBackgroundCopyJobs bcmJobs;
             _bcm.EnumJobs(dwFlags, out bcmJobs);
             uint jobsCount;
             bcmJobs.GetCount(out jobsCount);
-			_jobs.Clear();
+            _jobs.Clear();
             for (int i = 0; i < jobsCount; i++)
             {
                 IBackgroundCopyJob job;
@@ -247,22 +247,22 @@ namespace BitsNet
                 job.GetId(out jobID);
                 _jobs.Add(jobID, new BitsJob(job));
             }
-			return _jobs;
+            return _jobs;
         }
 
-		/// <summary>
-		/// Completes a job with specified Guid
-		/// </summary>
-		/// <param name="jobGuid"></param>
+        /// <summary>
+        /// Completes a job with specified Guid
+        /// </summary>
+        /// <param name="jobGuid"></param>
         public static void CompleteJob(Guid jobGuid)
         {
             _jobs[jobGuid].CompleteJob();
         }
 
-		/// <summary>
-		/// Cancels a job with specified Guid
-		/// </summary>
-		/// <param name="jobGuid"></param>
+        /// <summary>
+        /// Cancels a job with specified Guid
+        /// </summary>
+        /// <param name="jobGuid"></param>
         public static void CancelJob(Guid jobGuid)
         {
             _jobs[jobGuid].CancelJob();
@@ -272,15 +272,15 @@ namespace BitsNet
         /// Resumes a job with specified Guid
         /// </summary>
         /// <param name="jobGuid"></param>
-		public static void ResumeJob(Guid jobGuid)
+        public static void ResumeJob(Guid jobGuid)
         {
             _jobs[jobGuid].ResumeJob();
         }
 
-		public static void SuspendJob(Guid jobGuid)
-		{
-			_jobs[jobGuid].SuspendJob();
-		}
+        public static void SuspendJob(Guid jobGuid)
+        {
+            _jobs[jobGuid].SuspendJob();
+        }
 
 
         /// <summary>
@@ -317,18 +317,18 @@ namespace BitsNet
                 case BitsJobActions.RESUME_JOB:
                     _jobs[guid].ResumeJob();
                     break;
-				case BitsJobActions.SUSPEND_JOB:
-					_jobs[guid].SuspendJob();
-					break;
+                case BitsJobActions.SUSPEND_JOB:
+                    _jobs[guid].SuspendJob();
+                    break;
             }
         }
 
-		/// <summary>
-		/// Adds new job to BITS
-		/// </summary>
-		/// <param name="url">url (at the moment source only) where to download file from</param>
-		/// <param name="fileName">name of the file extracted from URL</param>
-		/// <param name="directory">destination directory on local drive</param>
+        /// <summary>
+        /// Adds new job to BITS
+        /// </summary>
+        /// <param name="url">url (at the moment source only) where to download file from</param>
+        /// <param name="fileName">name of the file extracted from URL</param>
+        /// <param name="directory">destination directory on local drive</param>
         public static void AddJob(string url, string fileName, string directory, bool autostart)
         {
             if (string.IsNullOrEmpty(url) || string.IsNullOrEmpty(directory))
@@ -341,38 +341,38 @@ namespace BitsNet
             _bcm.CreateJob(fileName, BG_JOB_TYPE.BG_JOB_TYPE_DOWNLOAD, out jobGuid, out job);
             //string localName = HttpUtility.UrlDecode( url.Substring(url.LastIndexOf("/") + 1) );
             string fullFileName = Path.Combine(directory + Path.DirectorySeparatorChar, fileName);
-			fullFileName = GetNonExistingFileName(fullFileName);
+            fullFileName = GetNonExistingFileName(fullFileName);
             job.AddFile(url, fullFileName);
-			if ( autostart )
+            if ( autostart )
                 job.Resume();
         }
 
-		/// <summary>
-		/// Gets filename and makes sure that file with the name does not exist. 
-		/// If file with specified name exist - adds sufix '-(x)' (where x is: 0,1,2,3...)
-		/// </summary>
-		/// <param name="filename">filename to check if file exists</param>
-		/// <returns>non existing filename</returns>
-		private static string GetNonExistingFileName(string filename)
-		{
-			string newFileName = filename;
-			uint i = 0;
-			string extension = string.Empty;
-			string noextFilename = string.Empty;
-			if ( filename.LastIndexOf(".") != -1 )
-			{
-				extension = filename.Substring(filename.LastIndexOf(".") + 1);
-				noextFilename = filename.Substring(0, filename.LastIndexOf("."));
-			}
-			else
-			{
-				noextFilename = filename;
-			}
-			while (File.Exists(newFileName))
-			{
-				newFileName = string.Format("{0}-({1}).{2}", noextFilename, i++, extension);
-			}
-			return newFileName;
-		}
+        /// <summary>
+        /// Gets filename and makes sure that file with the name does not exist. 
+        /// If file with specified name exist - adds sufix '-(x)' (where x is: 0,1,2,3...)
+        /// </summary>
+        /// <param name="filename">filename to check if file exists</param>
+        /// <returns>non existing filename</returns>
+        private static string GetNonExistingFileName(string filename)
+        {
+            string newFileName = filename;
+            uint i = 0;
+            string extension = string.Empty;
+            string noextFilename = string.Empty;
+            if ( filename.LastIndexOf(".") != -1 )
+            {
+                extension = filename.Substring(filename.LastIndexOf(".") + 1);
+                noextFilename = filename.Substring(0, filename.LastIndexOf("."));
+            }
+            else
+            {
+                noextFilename = filename;
+            }
+            while (File.Exists(newFileName))
+            {
+                newFileName = string.Format("{0}-({1}).{2}", noextFilename, i++, extension);
+            }
+            return newFileName;
+        }
     }
 }
