@@ -49,16 +49,16 @@ namespace BitsMonitor
 		// handling unhandled exceptions (CLR)
 		static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
 		{
-			LogError(sender, e.ExceptionObject as Exception, UnhandledExceptionType.CLR);
+			LogError(e.ExceptionObject as Exception, UnhandledExceptionType.CLR);
 		}
 
 		// handlind WinForms unhandled exceptions
 		static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
 		{
-			LogError(sender, e.Exception, UnhandledExceptionType.WinForms);
+			LogError(e.Exception, UnhandledExceptionType.WinForms);
 		}
 
-		static void LogError(object sender, Exception e, UnhandledExceptionType exType)
+		static void LogError(Exception e, UnhandledExceptionType exType)
 		{
 			ExceptionInfo einfo = new ExceptionInfo();
 			einfo.ShowDialog();
