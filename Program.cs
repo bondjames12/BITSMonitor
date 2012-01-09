@@ -21,7 +21,7 @@ namespace BitsMonitor
 
 	static class Program
 	{
-		private static Logger logger = LogManager.GetCurrentClassLogger();
+		private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
 		/// <summary>
 		/// The main entry point for the application.
@@ -66,7 +66,7 @@ namespace BitsMonitor
 			
 			string exceptionData = e.ToString();
 			string logmessage = string.Format("exception type: {0} {1} {2}{1} - - - - - - - - {1}User provided information: {3}{1}{1}", exType.ToString(), Environment.NewLine, exceptionData, userinfo);
-			logger.Log(LogLevel.Error, logmessage);
+			Logger.Log(LogLevel.Error, logmessage);
 
 			Application.Exit();
 			//logger.LogException(LogLevel.Error, string.Format("exception type: {0}", exType.ToString()), e);
