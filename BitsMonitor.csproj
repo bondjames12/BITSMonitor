@@ -173,14 +173,13 @@
     <None Include="Images\Add.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
+    <None Include="app.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Images\complete.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Images\BITSMonitor.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="BitsNet\BitsNet.csproj">
@@ -204,6 +203,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Images\BITSMonitor.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
