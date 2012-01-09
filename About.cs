@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Linq;
 using System.Reflection;
 using System.Windows.Forms;
 
@@ -101,9 +97,9 @@ namespace BitsMonitor
         }
         #endregion
 
-		private void emailAddress_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-		{
-			System.Diagnostics.Process.Start("mailto:maciek.talaska@gmail.com?Subject=[BITS Monitor]");
-		}
+        private void emailAddress_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("mailto:maciek.talaska@gmail.com?Subject=[BITSMonitor]");
+        }
     }
 }
