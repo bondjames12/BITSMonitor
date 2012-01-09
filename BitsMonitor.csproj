@@ -12,7 +12,7 @@
     <AssemblyName>BitsMonitor</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ApplicationIcon>Resources\BITSMonitor.ico</ApplicationIcon>
+    <ApplicationIcon>Images\BITSMonitor.ico</ApplicationIcon>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
     <UpgradeBackupLocation>
@@ -161,26 +161,26 @@
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Start.png" />
+    <None Include="Images\Start.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Pause.png" />
+    <None Include="Images\Pause.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\delete3.png" />
+    <None Include="Images\delete3.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Add.png" />
+    <None Include="Images\Add.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="NLog.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Resources\complete.png" />
+    <None Include="Images\complete.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\BITSMonitor.ico" />
+    <Content Include="Images\BITSMonitor.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="BitsNet\BitsNet.csproj">
