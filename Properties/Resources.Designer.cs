@@ -67,6 +67,13 @@ namespace BitsMonitor.Properties {
             }
         }
         
+        internal static System.Drawing.Bitmap BITSMonitor64 {
+            get {
+                object obj = ResourceManager.GetObject("BITSMonitor64", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
         internal static System.Drawing.Bitmap complete {
             get {
                 object obj = ResourceManager.GetObject("complete", resourceCulture);
