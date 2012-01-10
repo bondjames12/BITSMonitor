@@ -61,13 +61,13 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsmiExit = new System.Windows.Forms.ToolStripMenuItem();
             this.lstDownloads = new BitsMonitor.mListView();
-            this.FileNameColumn = new System.Windows.Forms.ColumnHeader();
-            this.JobColumn = new System.Windows.Forms.ColumnHeader();
-            this.PercentColumn = new System.Windows.Forms.ColumnHeader();
-            this.jobStateColumn = new System.Windows.Forms.ColumnHeader();
-            this.UrlColumn = new System.Windows.Forms.ColumnHeader();
-            this.sizeColumn = new System.Windows.Forms.ColumnHeader();
-            this.transferredColumn = new System.Windows.Forms.ColumnHeader();
+            this.FileNameColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.JobColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.PercentColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.jobStateColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.UrlColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.sizeColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.transferredColumn = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsslActiveAllDownloads = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStripMenu.SuspendLayout();
@@ -363,9 +363,9 @@
             this.lstDownloads.TabIndex = 1;
             this.lstDownloads.UseCompatibleStateImageBehavior = false;
             this.lstDownloads.View = System.Windows.Forms.View.Details;
-            this.lstDownloads.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lstDownloads_MouseDoubleClick);
             this.lstDownloads.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.lstDownloads_ItemSelectionChanged);
             this.lstDownloads.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lstDownloads_KeyDown);
+            this.lstDownloads.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lstDownloads_MouseDoubleClick);
             // 
             // FileNameColumn
             // 
@@ -429,8 +429,8 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
             this.Text = "Bits Monitor";
-            this.Load += new System.EventHandler(this.MainForm_Load);
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
+            this.Load += new System.EventHandler(this.MainForm_Load);
             this.Resize += new System.EventHandler(this.MainForm_Resize);
             this.toolStripMenu.ResumeLayout(false);
             this.toolStripMenu.PerformLayout();
