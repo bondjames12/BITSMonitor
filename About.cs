@@ -102,5 +102,18 @@ namespace BitsMonitor
         {
             System.Diagnostics.Process.Start("mailto:maciek.talaska@gmail.com?Subject=[BITSMonitor]");
         }
+
+        private void About_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+                e.IsInputKey = true;
+        }
+
+        private void About_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+                this.Close();
+            this.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+        }
     }
 }
