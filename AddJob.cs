@@ -56,13 +56,23 @@ namespace BitsMonitor
         private void InitializeEx()
         {
             string mruDirectory = Settings.Default.MRUFolder;
+            if (string.IsNullOrEmpty(mruDirectory))
+            {
+                mruDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            }
             if (!string.IsNullOrEmpty(mruDirectory) && (System.IO.Directory.Exists(mruDirectory)))
                 this.txtSaveIn.Text = mruDirectory;
             else
                 Settings.Default.MRUFolder = string.Empty;
             if (!Clipboard.ContainsText( TextDataFormat.Text | TextDataFormat.UnicodeText ))
                 return;
-            this.txtUrl.Text = Clipboard.GetText(TextDataFormat.Text | TextDataFormat.UnicodeText);
+            // check if clipboard text is a  valid link (starts with http or https)
+            Regex urlregex = new Regex(urlPattern, RegexOptions.Compiled);
+            string clipboardText = Clipboard.GetText(TextDataFormat.Text | TextDataFormat.UnicodeText);
+            Match match = urlregex.Match(clipboardText);
+            if (!match.Success)
+                return;
+            this.txtUrl.Text = clipboardText;
             this.txtUrl.Focus();
             this.txtUrl.Select();
         }
@@ -133,6 +143,14 @@ namespace BitsMonitor
             FolderBrowserDialog folderBrowse = new FolderBrowserDialog();
             folderBrowse.ShowNewFolderButton = true;
             folderBrowse.Description = "Please choose destination folder for storing downloaded file";
+            if (!string.IsNullOrEmpty(this.txtSaveIn.Text))
+            {
+                folderBrowse.SelectedPath = this.txtSaveIn.Text;
+            }
+            else if ( !string.IsNullOrEmpty(Settings.Default.MRUFolder))
+            {
+                folderBrowse.SelectedPath = Settings.Default.MRUFolder;
+            }
             if (folderBrowse.ShowDialog() == DialogResult.OK)
             {
                 this.txtSaveIn.Text = folderBrowse.SelectedPath;
