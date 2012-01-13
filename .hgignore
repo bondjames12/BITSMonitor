@@ -4,3 +4,4 @@ obj/*
 ./*.user
 _ReSharper*
 ./*.cache
+ProjectVersion.cs

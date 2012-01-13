@@ -1,0 +1,13 @@
+﻿<#@ template language="C#" #>
+
+using System.Reflection;
+
+[assembly: AssemblyVersion("1.1.<#= this.build #>.<#= this.revision #>")]
+[assembly: AssemblyFileVersion("1.1.<#= this.build #>.<#= this.revision #>")]
+
+<#+
+//int RevisionNumber = (int)(DateTime.UtcNow - new DateTime(2010,1,1)).TotalDays;
+//DateTime dt = DateTime.Now;
+int build = (DateTime.Now.Year % 10) * 10000 + DateTime.Now.Month * 100 + DateTime.Now.Day;
+int revision = DateTime.Now.Hour*100 + DateTime.Now.Minute;
+#>
