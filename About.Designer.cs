@@ -27,6 +27,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(About));
             this.labelProductName = new System.Windows.Forms.Label();
             this.labelCopyright = new System.Windows.Forms.Label();
             this.emailAddress = new System.Windows.Forms.LinkLabel();
@@ -174,13 +175,13 @@
             this.Controls.Add(this.labelCopyright);
             this.Controls.Add(this.labelProductName);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "About";
             this.Padding = new System.Windows.Forms.Padding(9);
-            this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.About_KeyDown);
