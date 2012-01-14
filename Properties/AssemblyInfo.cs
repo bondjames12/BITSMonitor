@@ -7,10 +7,14 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("BitsMonitor")]
 [assembly: AssemblyDescription("BITS Monitor - simple interface for BITS (Background Intelligent Transfer Service)")]
-[assembly: AssemblyConfiguration("")]
+#if DEBUG
+[assembly: AssemblyConfiguration("Debug")]
+#else
+[assembly: AssemblyConfiguration("Release")]
+#endif
 [assembly: AssemblyCompany("Maciek Talaska")]
 [assembly: AssemblyProduct("BitsMonitor")]
-[assembly: AssemblyCopyright("This application is free. (\"Free\" as in \"beer\")")]
+[assembly: AssemblyCopyright("Copyright © 2008-2012 by Maciej Talaska")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
