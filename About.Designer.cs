@@ -38,6 +38,7 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.okButton = new System.Windows.Forms.Button();
+            this.lblCopyright = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -67,7 +68,7 @@
             // emailAddress
             // 
             this.emailAddress.AutoSize = true;
-            this.emailAddress.Location = new System.Drawing.Point(72, 53);
+            this.emailAddress.Location = new System.Drawing.Point(72, 72);
             this.emailAddress.Margin = new System.Windows.Forms.Padding(2);
             this.emailAddress.Name = "emailAddress";
             this.emailAddress.Size = new System.Drawing.Size(136, 13);
@@ -114,24 +115,26 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.Controls.Add(this.emailAddress, 1, 3);
+            this.tableLayoutPanel1.Controls.Add(this.emailAddress, 1, 4);
             this.tableLayoutPanel1.Controls.Add(this.labelCompanyName, 1, 2);
             this.tableLayoutPanel1.Controls.Add(this.labelVersion, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.textBoxDescription, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.pictureBox1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.linkLabel1, 1, 4);
-            this.tableLayoutPanel1.Controls.Add(this.okButton, 1, 5);
+            this.tableLayoutPanel1.Controls.Add(this.linkLabel1, 1, 5);
+            this.tableLayoutPanel1.Controls.Add(this.okButton, 1, 6);
+            this.tableLayoutPanel1.Controls.Add(this.lblCopyright, 1, 3);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(9, 9);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 6;
+            this.tableLayoutPanel1.RowCount = 7;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(276, 138);
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(276, 148);
             this.tableLayoutPanel1.TabIndex = 33;
             // 
             // pictureBox1
@@ -148,7 +151,7 @@
             // linkLabel1
             // 
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(72, 72);
+            this.linkLabel1.Location = new System.Drawing.Point(72, 89);
             this.linkLabel1.Margin = new System.Windows.Forms.Padding(2);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(157, 13);
@@ -160,18 +163,28 @@
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.okButton.Location = new System.Drawing.Point(198, 113);
+            this.okButton.Location = new System.Drawing.Point(198, 123);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 22);
             this.okButton.TabIndex = 24;
             this.okButton.Text = "&OK";
+            // 
+            // lblCopyright
+            // 
+            this.lblCopyright.AutoSize = true;
+            this.lblCopyright.Location = new System.Drawing.Point(72, 53);
+            this.lblCopyright.Margin = new System.Windows.Forms.Padding(2);
+            this.lblCopyright.Name = "lblCopyright";
+            this.lblCopyright.Size = new System.Drawing.Size(57, 13);
+            this.lblCopyright.TabIndex = 37;
+            this.lblCopyright.Text = "[Copyright]";
             // 
             // About
             // 
             this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(294, 156);
+            this.ClientSize = new System.Drawing.Size(294, 166);
             this.Controls.Add(this.labelCopyright);
             this.Controls.Add(this.labelProductName);
             this.Controls.Add(this.tableLayoutPanel1);
@@ -205,6 +218,7 @@
         private System.Windows.Forms.LinkLabel linkLabel1;
         private System.Windows.Forms.Button okButton;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label lblCopyright;
 
 	}
 }
