@@ -223,7 +223,12 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PreBuildEvent>cd "$(ProjectDir)"
-"c:\Program Files\Common Files\microsoft shared\TextTemplating\10.0\TextTransform.exe" -out ProjectVersion.cs ProjectVersion.tt</PreBuildEvent>
+IF NOT EXIST "c:\Program Files (x86)\Common Files\microsoft shared\TextTemplating\10.0\TextTransform.exe" GOTO OS32
+"c:\Program Files (x86)\Common Files\microsoft shared\TextTemplating\10.0\TextTransform.exe"  -out ProjectVersion.cs ProjectVersion.tt
+GOTO END
+:OS32
+"c:\Program Files\Common Files\microsoft shared\TextTemplating\10.0\TextTransform.exe" -out ProjectVersion.cs ProjectVersion.tt
+:END</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
