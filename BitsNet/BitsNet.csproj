@@ -68,6 +68,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\ProjectVersion.cs">
+      <Link>ProjectVersion.cs</Link>
+    </Compile>
     <Compile Include="BitsManager.cs" />
     <Compile Include="InteropBits.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
